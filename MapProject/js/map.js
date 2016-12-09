@@ -4,6 +4,7 @@ var placeMarkers=[];
 var input = document.getElementById("input");
 var dest=document.getElementById("dest");
 var staring=document.getElementById("starting");
+var search=document.getElementById("search");
 
 var styles = [
     {
@@ -58,18 +59,20 @@ function initMap() {
 
     input.addEventListener("keyup", function () {
         vm.toStarting(false);
-        if (this.value.length > 0)
+        if (this.value!=""&&this.value.length > 0) {
             getPredictions(this.value, this);
+        }
         else
-            vm.setPredictions();
+            vm.setPredictions(null);
     });
+
 
     dest.addEventListener("keyup", function () {
         vm.toStarting(false);
         if (this.value.length > 0)
             getPredictions(this.value, this);
         else
-            vm.setPredictions();
+            vm.setPredictions(null);
     });
 
     staring.addEventListener("keyup", function () {
@@ -77,19 +80,23 @@ function initMap() {
         if (this.value.length > 0)
             getPredictions(this.value, this);
         else
-            vm.setPredictions();
+            vm.setPredictions(null);
     });
 
     function getPredictions(input, target) {
         service.getQueryPredictions({input: input}, getAutoPlaces);
 
         function getAutoPlaces(predications, status) {
+            if(predications==null){
+                console.log("No location entered.");
+                return;
+            }
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 vm.setPredictions(predications);
             }
             else {
                 vm.setPredictions();
-                console.log("Request Failed!");
+                console.log("Request failed.");
             }
         }
     }
@@ -123,6 +130,15 @@ function initMap() {
             marker.addListener("click", function () {
                 //map.setCenter(new google.maps.LatLng({lat:this.position.lat(),lng:this.position.lng()}))
                 map.panTo(this.position);
+                // var bounds=new google.maps.LatLngBounds();
+                // if (this.geometry.viewport) {
+                //     // Only geocodes have viewport.
+                //     bounds.union(this.geometry.viewport);
+                // } else {
+                //     bounds.extend(this.geometry.location);
+                // }
+                // map.fitBounds(bounds);
+
                 //marker.setIcon(makeMarkerIcon("http://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png"));
                 addInfoWin(this, map);
             })
@@ -133,7 +149,7 @@ function initMap() {
 
     function hideMarkers(array) {
         array.forEach(function (each) {
-            each.map = null;
+            each.setMap(null);
         })
     }
 
@@ -155,8 +171,10 @@ function initMap() {
 
         function getStreetView(data, status) {
             if (status == google.maps.StreetViewStatus.OK) {
+                var set='<div id="setLocation"><button>Depart from here</button><button>Directions</button><button>Save this place</button></div>';
+                var content='<div id="info_title">' + marker.title + '</div><div id="pano"></div>'+set;
                 var svLocation = data.location.latLng;
-                infoWin.setContent('<div id="info_title">' + marker.title + '</div><div id="pano"></div>');
+                infoWin.setContent(content);
                 var heading = google.maps.geometry.spherical.computeHeading(svLocation, marker.position);
                 var panoramaOptions = {
                     position: svLocation,
@@ -177,5 +195,57 @@ function initMap() {
         infoWin.open(map, marker);
     }
 
+    search.addEventListener("click",function () {
+
+        vm.isInputListClose(true);
+        if(input.value==null||input.value=="")
+            return;
+
+        vm.isNavBackHidden(false);
+        hideMarkers(markers);
+        hideMarkers(placeMarkers);
+        markers=[];
+        placeMarkers=[];
+        getPlaces();
+
+        vm.searchBtn.flag=false;
+        vm.searchBtnIcon(vm.searchBtn.image());
+    })
+
+    function getPlaces() {
+        var placesService=new google.maps.places.PlacesService(map);
+        placesService.textSearch({
+            query:input.value,
+            bounds:map.getBounds()
+        },function (results,status) {
+            if(status==google.maps.places.PlacesServiceStatus.OK){
+                console.log(results);
+                createPlacesMarkers(results);
+            }
+        });
+
+    }
+
+    function createPlacesMarkers(places) {
+        var bounds=new google.maps.LatLngBounds();
+        places.forEach(function (each) {
+            //console.log(each);
+            var marker=new google.maps.Marker({
+                map:map,
+                title:each.name,
+                position:each.geometry.location,
+                id:each.place_id
+            });
+            placeMarkers.push(marker);
+            if (each.geometry.viewport) {
+                // Only geocodes have viewport.
+                bounds.union(each.geometry.viewport);
+            } else {
+                bounds.extend(each.geometry.location);
+            }
+        });
+
+       map.fitBounds(bounds);
+    }
 
 }

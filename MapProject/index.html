@@ -12,27 +12,41 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
-<div id="nav" data-bind="style:{display:isSideBarOpen()?'none':'inline-block'}">
+
+<div id="nav" data-bind="style:{display:isSideBarOpen()?'none':'inline-block'},css:{'navHidden':!isNavHidden()}">
     <div class="search-bar">
         <div class="container-button-burger">
             <button class="glyphicon glyphicon-menu-hamburger"></button>
         </div>
         <div class="input-address-container">
-            <input type="text" name="" id="input" placeholder="Search Google Maps" data-bind="value:location.destination">
-            <span class="glyphicon glyphicon-search"></span>
+            <input type="text" id="input" placeholder="Search Google Maps" data-bind="value:location.destination,click:openInputList">
+            <span class="glyphicon glyphicon-search" id="search"></span>
         </div>
 
         <div class="seperator"></div>
 
         <div class="button-nav-container">
-            <button class="glyphicon glyphicon-arrow-right" data-bind="click:toggleSideBar"></button>
+            <button class="btn-glyph" data-bind="click:toggleSideBar">
+                <img src="images/right-arrow.svg" alt="close or arrow" data-bind="attr:{'src':searchBtnIcon}">
+            </button>
         </div>
     </div>
 
-    <div class="list-predictions-container display_none" data-bind="css:{display_none:predictions===undefined}">
+    <div class="list-predictions-container display_none" data-bind="css:{display_none:isInputListClose}">
         <ul class="list-predictions" data-bind="foreach:predictions">
             <li data-bind="click:$root.setLocation"><div><img class="icon_prediction" data-bind="attr:{src:$root.icon_image($data)}"></div><div class="prediction" data-bind="text:description"></div></li>
         </ul>
+    </div>
+
+</div>
+<div class="information" data-bind="css:{'navHidden':!isNavHidden()}">
+    <div class="info_back display_none" data-bind="css:{'display_none':isNavBackHidden}">
+    <div id="nav_back">
+        <div class="blue_back"></div>
+    </div>
+    <div id="nav_close">
+        <button id="nav_close_btn" class="btn-glyph" data-bind="click:hideNav"><img data-bind="attr:{src:currentNavSlide}" alt="slide"></button>
+    </div>
     </div>
 </div>
 <div id="map" data-bind="click:closeSideBar">

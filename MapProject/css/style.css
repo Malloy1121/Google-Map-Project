@@ -5,7 +5,8 @@
     /*display: inline-block;*/
     border: 1px solid rgba(121, 122, 124,0.6);
     border-bottom: none;
-    z-index: 2;
+    z-index: 3;
+    transition: transform 0.1s;
     background: white;
 
 }
@@ -207,17 +208,30 @@ div#side-bar-slide {
     border: 1px lightgrey solid;
     /*border-left: none;*/
     left:450px;
-    top:75px;
+    top:15px;
     background-color: white;
 }
 
-button#btn-glyph {
+div#nav_close {
+    display: inline-block;
+    position: absolute;
+    padding-left: 0;
+    border: 1px lightgrey solid;
+    /*border-left: none;*/
+    left:430px;
+    top:15px;
+    background-color: white;
+}
+
+button#btn-glyph,
+button#nav_close_btn {
     width: 30px;
     height: 50px;
     padding:1px 3px;
 }
 
-button#btn-glyph img {
+button#btn-glyph img,
+button#nav_close_btn img {
     width: 20px;
     display: block;
 }
@@ -305,4 +319,8 @@ ul li {
 
 #result li div.prediction {
     width: 380px;
+}
+
+button.btn-glyph img{
+    width: 25px;
 }
