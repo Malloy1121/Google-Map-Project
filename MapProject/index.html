@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Google Map API Project</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/map.css">
+    <script src="bower_components/knockout/dist/knockout.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+<div id="nav" data-bind="style:{display:isSideBarOpen()?'none':'inline-block'}">
+    <div class="search-bar">
+        <div class="container-button-burger">
+            <button class="glyphicon glyphicon-menu-hamburger"></button>
+        </div>
+        <div class="input-address-container">
+            <input type="text" name="" id="input" placeholder="Search Google Maps" data-bind="value:location.destination">
+            <span class="glyphicon glyphicon-search"></span>
+        </div>
+
+        <div class="seperator"></div>
+
+        <div class="button-nav-container">
+            <button class="glyphicon glyphicon-arrow-right" data-bind="click:toggleSideBar"></button>
+        </div>
+    </div>
+
+    <div class="list-predictions-container display_none" data-bind="css:{display_none:predictions===undefined}">
+        <ul class="list-predictions" data-bind="foreach:predictions">
+            <li data-bind="click:$root.setLocation"><div><img class="icon_prediction" data-bind="attr:{src:$root.icon_image($data)}"></div><div class="prediction" data-bind="text:description"></div></li>
+        </ul>
+    </div>
+</div>
+<div id="map" data-bind="click:closeSideBar">
+
+</div>
+
+<div class="side-bar sideBar_close" data-bind="css:{'sideBar_open':isSideBarOpen(),'sideBar_close':isSideBarClose(),'sideBar_hidden':isSideBarHidden()}">
+    <div id="side-bar-slide">
+        <button id="btn-glyph" class="btn-glyph" data-bind="click:hideSideBar"><img data-bind="attr:{src:currentSlide}" alt="slide"></button>
+    </div>
+<div class="mode-bar" >
+    <!-- ko foreach:modes -->
+    <div class="mode" data-bind="css:{selectedMode:isSelected},click:$root.selectMode">
+        <button class="btn-glyph"><img data-bind="attr:{src:image,alt:mode}"></button>
+    </div>
+    <!-- /ko -->
+
+    <div class="mode" style="padding-left: 90px">
+        <button class="btn-glyph" data-bind="click:$root.toggleSideBar"><img src="images/close-button.svg" alt="close" style="width: 25px;"></button>
+    </div>
+</div>
+    <div class="input-route-container">
+        <div class="input-route">
+        <div id="input-starting"></label><input type="text" id="starting" placeholder="Choose starting point..." data-bind="value:location.starting"></div>
+        <div id="input-dest" ><input type="text"  id="dest" placeholder="Choose destination..." data-bind="value:location.destination"></div>
+        </div>
+        <div class="input-route-reverse">
+            <button class="btn-glyph" data-bind="click:reverseLocation"><img src="images/up-and-down-opposite-double-arrows-side-by-side.svg" alt="reverse"></button>
+        </div>
+    </div>
+    <div id="result">
+        <div class="list-predictions-container display_none" data-bind="css:{display_none:predictions===undefined}">
+            <ul class="list-predictions" data-bind="foreach:predictions">
+                <li data-bind="click:$root.setLocation"><div><img class="icon_prediction" data-bind="attr:{src:$root.icon_image($data)}"></div><div class="prediction" data-bind="text:description"></div></li>
+            </ul>
+        </div>
+    </div>
+    <div id="routes">
+        <div class="route">1</div>
+        <div class="route">1</div>
+    </div>
+</div>
+<script src="js/map.js"></script>
+<script src="js/mvvm.js"></script>
+<script  async defer
+         src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCadwJpNLlZz4ylftxHZFubT5sWWYopuPU&callback=initMap">
+</script>
+</body>
+</html>
