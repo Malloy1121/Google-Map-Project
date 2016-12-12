@@ -7,6 +7,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/sideBar.css">
+    <link rel="stylesheet" href="css/style-sm.css" media="screen and (max-width:500px)">
     <link rel="stylesheet" href="css/map.css">
     <script src="bower_components/knockout/dist/knockout.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -34,16 +37,37 @@
 
     <div class="list-predictions-container display_none" data-bind="css:{display_none:isInputListClose}">
         <ul class="list-predictions" data-bind="foreach:predictions">
-            <li data-bind="click:$root.setLocation"><div><img class="icon_prediction" data-bind="attr:{src:$root.icon_image($data)}"></div><div class="prediction" data-bind="text:description"></div></li>
+            <li data-bind="click:$root.setMarkers"><div><img class="icon_prediction" data-bind="attr:{src:$root.icon_image($data)}"></div><div class="prediction" data-bind="text:description"></div></li>
         </ul>
     </div>
 
 </div>
-<div class="information" data-bind="css:{'navHidden':!isNavHidden()}">
-    <div class="info_back display_none" data-bind="css:{'display_none':isNavBackHidden}">
+<div class="information display_none" data-bind="css:{'navHidden':!isNavHidden(),'display_none':isNavBackHidden}">
+    <div class="info_back">
     <div id="nav_back">
         <div class="blue_back"></div>
+        <div id="info_win">
+        </div>
+
     </div>
+        <div class="button-group" data-bind="css:{'display_none':isBtnGroupHidden}">
+            <table>
+                <tr>
+                    <td><button class="btn-glyph-lg btn-glyph" data-bind="click:setStartingMarker">
+                        <div><img src="images/location-pin.svg" alt="starting"></div>
+                        <div class="button-group-label">Depart from here</div>
+                    </button></td>
+                    <td><button class="btn-glyph-lg btn-glyph" data-bind="click:setDestMarker">
+                        <div><img src="images/navigation.svg" alt="destination"></div>
+                        <div class="button-group-label">Go to here</div>
+                    </button></td>
+                    <td><button class="btn-glyph-lg btn-glyph" data-bind="click:save">
+                        <div><img src="images/star.svg" alt="save"></div>
+                        <div class="button-group-label">Save</div>
+                    </button></td>
+                </tr>
+            </table>
+        </div>
     <div id="nav_close">
         <button id="nav_close_btn" class="btn-glyph" data-bind="click:hideNav"><img data-bind="attr:{src:currentNavSlide}" alt="slide"></button>
     </div>
@@ -53,7 +77,7 @@
 
 </div>
 
-<div class="side-bar sideBar_close" data-bind="css:{'sideBar_open':isSideBarOpen(),'sideBar_close':isSideBarClose(),'sideBar_hidden':isSideBarHidden()}">
+<div class="side-bar sideBar_close" data-bind="css:{'sideBar_open':isSideBarOpen(),'sideBar_close':!isSideBarOpen(),'sideBar_hidden':isSideBarHidden()}">
     <div id="side-bar-slide">
         <button id="btn-glyph" class="btn-glyph" data-bind="click:hideSideBar"><img data-bind="attr:{src:currentSlide}" alt="slide"></button>
     </div>
@@ -70,7 +94,7 @@
 </div>
     <div class="input-route-container">
         <div class="input-route">
-        <div id="input-starting"></label><input type="text" id="starting" placeholder="Choose starting point..." data-bind="value:location.starting"></div>
+        <div id="input-starting"><input type="text" id="starting" placeholder="Choose starting point..." data-bind="value:location.starting"></div>
         <div id="input-dest" ><input type="text"  id="dest" placeholder="Choose destination..." data-bind="value:location.destination"></div>
         </div>
         <div class="input-route-reverse">
@@ -80,7 +104,7 @@
     <div id="result">
         <div class="list-predictions-container display_none" data-bind="css:{display_none:predictions===undefined}">
             <ul class="list-predictions" data-bind="foreach:predictions">
-                <li data-bind="click:$root.setLocation"><div><img class="icon_prediction" data-bind="attr:{src:$root.icon_image($data)}"></div><div class="prediction" data-bind="text:description"></div></li>
+                <li data-bind="click:$root.setSingleMarker"><button class="btn-result"><div><img class="icon_prediction" data-bind="attr:{src:$root.icon_image($data)}"></div><div class="prediction" data-bind="text:description"></div></button></li>
             </ul>
         </div>
     </div>
@@ -90,7 +114,7 @@
     </div>
 </div>
 <script src="js/map.js"></script>
-<script src="js/mvvm.js"></script>
+<script src="js/controller.js"></script>
 <script  async defer
          src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCadwJpNLlZz4ylftxHZFubT5sWWYopuPU&callback=initMap">
 </script>

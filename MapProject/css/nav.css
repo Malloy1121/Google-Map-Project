@@ -1,0 +1,178 @@
+#nav {
+    position: absolute;
+    left: 10px;
+    top:10px;
+    /*display: inline-block;*/
+    border: 1px solid rgba(121, 122, 124,0.6);
+    border-bottom: none;
+    z-index: 3;
+    transition: transform 0.1s;
+    background: white;
+    min-width: 402px;
+}
+
+div.search-bar {
+    height: 55px;
+    display: inline-block;
+    border-bottom: 1px solid rgba(121, 122, 124,0.6);
+    padding:7px 3px;
+    width: 100%;
+}
+
+.search-bar>div {
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+}
+
+.glyphicon {
+    width: 45px;
+    height: 100%;
+    font-size: 1.5em;
+    text-align: center;
+    top:0;
+    background: none;
+    border: none;
+}
+
+.glyphicon.glyphicon-arrow-right {
+    font-size: 1.2em;
+}
+
+
+#input {
+    display: inline-block;
+    height: 100%;
+    border: none;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    line-height: 55px;
+    font-size: 1.3em;
+    width: 250px;
+}
+
+.glyphicon-search {
+    height: 100%;
+    line-height: 40px;
+
+}
+
+
+button:focus,
+input:focus {
+    outline: none;
+}
+
+.seperator {
+    height: inherit;
+    border-right: 1px solid grey;
+
+}
+
+table, tbody,tr {
+    display: block;
+    margin:0 auto;
+    text-align: center;
+    color:rgb(66, 133, 244);
+}
+
+td {
+    margin:0 auto;
+    width: 120px;
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+}
+
+div.information {
+    width: 430px;
+    height: 100%;
+    position: absolute;
+    /*top: -11px;*/
+    /*left:-11px;*/
+    z-index: 2;
+    transition: transform 0.1s;
+    -webkit-transition: transform 0.1s;
+    -moz-transition: transform 0.1s;
+    -ms-transition: transform 0.1s;
+    -o-transition: transform 0.1s;
+}
+
+div.info_back {
+    height: inherit;
+    width: inherit;
+    background-color: white;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+div.navHidden {
+    transform: translateX(-430px);
+}
+
+div#nav_back {
+    z-index: 1;
+}
+
+div.blue_back {
+    background-color: rgb(66, 133, 244);
+    width: inherit;
+    height:75px;
+}
+
+div#info_win {
+    width: inherit;
+    text-align: center;
+    padding:5px;
+}
+
+div#street_view {
+    height: 420px;
+}
+
+div#info_title {
+    width: inherit;
+}
+
+#info_title {
+    width: 300px;
+    text-align: center;
+    font-size: 1.3em;
+}
+
+#setLocation {
+    width: 300px;
+}
+
+#setLocation button {
+    display: inline-block;
+    width: 100px;
+    font-size: 1.2em;
+}
+
+
+div#nav_close {
+    display: inline-block;
+    position: absolute;
+    padding-left: 0;
+    border: 1px lightgrey solid;
+    /*border-left: none;*/
+    left:430px;
+    top:15px;
+    background-color: white;
+}
+
+div.button-group {
+    padding:10px 5px;
+}
+
+.button-group-label {
+    font-size: 1.1em;
+    font-weight: 600;
+    vertical-align: top;
+}
+
+.btn-glyph-lg.btn-glyph img {
+    width: 40px;
+}
