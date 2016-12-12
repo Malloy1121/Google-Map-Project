@@ -15,16 +15,16 @@ body {
 }
 
 div.input-address-container {
-    width: 73%;
+    width: 83%;
 }
 
 input#input {
-    width: 77%;
+    width: 78%;
     font-size: 1.1em;
 }
 
 .glyphicon{
-    font-size: 1.3em;
+    font-size: 1.5em;
     width: 100%;
     text-align: center;
 }
@@ -33,9 +33,8 @@ input#input {
     width: 20%;
 }
 
-div.container-button-burger,
-div.button-nav-container {
-    width: 11%;
+div.container-button-burger {
+    width: 15%;
 }
 
 
@@ -47,5 +46,65 @@ div.button-nav-container {
 
 button.btn-glyph img {
     width: 25px;
+}
+
+div.button-nav-container,
+div.seperator {
+    display: none;
+}
+
+div.information {
+    width: 100%;
+    height:100%;
+}
+
+div#nav_close {
+    display: none;
+}
+
+div#street_view {
+    width: 100%;
+    height: 150px;
+}
+
+td {
+    width: 30%;
+}
+
+div#nav_close_sm {
+    display: block;
+    background-color:rgb(66, 133, 244) ;
+    vertical-align: bottom;
+}
+
+div#nav_close_sm img {
+    height: 45px;
+    width: 45px;
+    font-size: 1.2em;
+}
+
+div#side-bar-slide {
+    display: none;
+}
+
+div.side-bar {
+    width: 100%;
+    height: 100%;
+}
+
+div.side-bar>div {
+    padding-left: 10px;
+}
+
+div.input-route {
+    width: 80%;
+}
+
+div.input-route-buttons {
+    width: 19%;
+    right: 0;
+}
+div.input-route-buttons img {
+    margin: 0 auto;
 }
 

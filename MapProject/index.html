@@ -71,7 +71,9 @@
     <div id="nav_close">
         <button id="nav_close_btn" class="btn-glyph" data-bind="click:hideNav"><img data-bind="attr:{src:currentNavSlide}" alt="slide"></button>
     </div>
+        <div id="nav_close_sm"><button class="btn-glyph" data-bind="click:toggleSideBar"><img src="images/down-arrow.svg" alt="close"></button></div>
     </div>
+
 </div>
 <div id="map" data-bind="click:closeSideBar">
 
@@ -88,7 +90,7 @@
     </div>
     <!-- /ko -->
 
-    <div class="mode" style="padding-left: 90px">
+    <div class="mode" >
         <button class="btn-glyph" data-bind="click:$root.toggleSideBar"><img src="images/close-button.svg" alt="close" style="width: 25px;"></button>
     </div>
 </div>
@@ -97,8 +99,13 @@
         <div id="input-starting"><input type="text" id="starting" placeholder="Choose starting point..." data-bind="value:location.starting"></div>
         <div id="input-dest" ><input type="text"  id="dest" placeholder="Choose destination..." data-bind="value:location.destination"></div>
         </div>
+        <div class="input-route-buttons">
         <div class="input-route-reverse">
             <button class="btn-glyph" data-bind="click:reverseLocation"><img src="images/up-and-down-opposite-double-arrows-side-by-side.svg" alt="reverse"></button>
+        </div>
+        <div class="input-route-go">
+            <button class="btn-glyph" data-bind="click:showDirection,attr:{'disable':!(isDestReady()&&isStartingReady())}"><img src="images/turn-right-sign.svg" alt="navigate"></button>
+        </div>
         </div>
     </div>
     <div id="result">

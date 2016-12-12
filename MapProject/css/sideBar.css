@@ -54,6 +54,7 @@ div.mode img {
     background: none;
     border: none;
     height: 100%;
+    display: block;
 }
 
 .selectedMode {
@@ -77,20 +78,43 @@ div.input-route {
 }
 
 div.input-route-reverse {
-    display: inline-block;
+    display: block;
     height: inherit;
     vertical-align: top;
     position: relative;
-    top:20px;
-    left: 15px;
+    /*top:20px;*/
+    /*left: 15px;*/
 }
 
 div.input-route div {
     padding:5px;
 }
 
-div.input-route-reverse img {
-    width: 30px;
+div.mode:last-child {
+    float: right;
+    width: 19%;
+    position: relative;
+    left: 10px;
+    padding:5px;
+    margin: 0;
+}
+
+div.input-route-buttons {
+    display: inline-block;
+    height: inherit;
+    vertical-align: top;
+    float: right;
+    position: relative;
+    right: 15px;
+}
+
+div.input-route-buttons>div {
+    padding: 5px;
+    vertical-align: middle;
+}
+
+div.input-route-reverse img,div.input-route-go img {
+    width: 25px;
     display: block;
 }
 

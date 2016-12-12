@@ -176,3 +176,7 @@ div.button-group {
 .btn-glyph-lg.btn-glyph img {
     width: 40px;
 }
+
+div.nav_close_sm {
+    display: none;
+}

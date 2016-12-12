@@ -40,11 +40,14 @@ function VM() {
     this.isNavBackHidden=ko.observable(true);
     this.isNavHidden=ko.observable(true);
     this.isBtnGroupHidden=ko.observable(true);
+    this.isStartingReady=ko.observable(false);
+    this.isDestReady=ko.observable(false);
     this.slide=new SlideButton(false);
     this.searchBtn=new SearchButton(true);
     this.searchBtnIcon=ko.observable(this.searchBtn.image());
     this.navSlide=new SlideButton(false);
     this.predictions=ko.observable();
+    this.firstPrediction=ko.observable();
     this.pred_starting=ko.observable();
     this.pred_dest=ko.observable();
     this.toStarting=ko.observable(false);
@@ -66,15 +69,19 @@ function VM() {
 
     this.toggleSideBar=function () {
         if(this.isSideBarOpen()){
-            if(self.startingMarker()!=null) {
+            if(self.startingMarker()) {
+                console.log(self.startingMarker());
                 self.startingMarker().setMap(null);
                 self.startingMarker(null);
             }
-            if(self.destMarker()!=null) {
+            if(self.destMarker()) {
+                console.log(self.destMarker());
                 self.destMarker().setMap(null);
                 self.startingMarker(null);
             }
         }
+
+
         if(!this.isNavBackHidden()){
             this.isNavBackHidden(true);
             this.searchBtn.flag=true;
@@ -85,11 +92,11 @@ function VM() {
             this.isSideBarOpen(!this.isSideBarOpen());
         }
 
-
-
         if(!this.isSideBarOpen()){
             this.location.destination("");
             this.location.starting("");
+            this.isDestReady(false);
+            this.isStartingReady(false);
             this.isBtnGroupHidden(true);
             this.setPredictions(null);
             placeMarkers.forEach(function (each) {
@@ -97,8 +104,15 @@ function VM() {
                     return;
                 each.setMap(null);
             });
+            markers.forEach(function (each) {
+                each.setMap(null);
+            });
             placeMarkers=[];
+            this.searchBtn.flag=true;
+            this.searchBtnIcon(this.searchBtn.image());
         }
+
+
 
     };
 
@@ -156,7 +170,7 @@ function VM() {
 
     this.setPredictions=function (array) {
         this.predictions(array);
-        console.log(this.predictions());
+        // console.log(this.predictions());
     };
 
     this.setPred_starting=function (array) {
@@ -195,6 +209,7 @@ function VM() {
         this.toggleSideBar();
         this.isSideBarOpen(true);
         this.location.destination(this.currentMarker().formattedAddress);
+        this.isDestReady(true);
     };
 
     this.setStartingMarker=function () {
@@ -202,6 +217,7 @@ function VM() {
         this.toggleSideBar();
         this.isSideBarOpen(true);
         this.location.starting(this.currentMarker().formattedAddress);
+        this.isStartingReady(true);
     };
 
     this.setMarkers=function (prediction,event) {
@@ -226,11 +242,13 @@ function VM() {
         vm.searchBtn.flag = true;
         vm.searchBtnIcon(vm.searchBtn.image());
         placeMarkers.forEach(function (each) {
-            if(each==self.destMarker()||each==self.startingMarker())
+            if(each==self.destMarker()||each==self.startingMarker()) {
+                console.log(123321)
                 return;
+            }
             each.setMap(null);
         });
-        placeMarkers=[];
+        // placeMarkers=[];
 
         markers.forEach(function (each) {
             each.setMap(null);
@@ -241,17 +259,33 @@ function VM() {
         if(self.toStarting()) {
             self.location.starting(prediction.description);
             self.startingMarker(self.currentMarker());
+            self.isStartingReady(true);
+            if(self.isDestReady())
+                self.showDirection();
         }
         else {
             self.location.destination(prediction.description);
             self.destMarker(self.currentMarker());
+            self.isDestReady(true);
+            if(self.isStartingReady())
+                self.showDirection();
+
         }
         self.predictions(null);
 
 
 
 
-    }
+    };
+
+    this.showDirection=function () {
+        if(!this.isNavBackHidden()){
+            this.isNavBackHidden(true);
+        }
+        else {
+            this.isSideBarOpen(!this.isSideBarOpen());
+        }
+    };
 
 }
 var vm=new VM();

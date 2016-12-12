@@ -11,8 +11,11 @@ html, body {
 
 
 @media screen and (min-width: 501px) {
-    html, body {
+    html, body  {
         min-width:1000px;
+        min-height: 500px;
+    }
+    div.information,div.side-bar {
         min-height: 500px;
     }
 }

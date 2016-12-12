@@ -11,6 +11,7 @@ var infoWin;
 var geocoder;
 var service;
 
+
 var styles = [
     {
         featureType: "water",
@@ -79,6 +80,14 @@ function initMap() {
             vm.setPredictions(null);
     });
 
+    dest.addEventListener("click", function () {
+        vm.toStarting(false);
+        if (this.value.length > 0)
+            getPredictions(this.value, this);
+        else
+            vm.setPredictions(null);
+    });
+
     staring.addEventListener("keyup", function () {
         vm.toStarting(true);
         if (this.value.length > 0)
@@ -87,7 +96,13 @@ function initMap() {
             vm.setPredictions(null);
     });
 
-
+    staring.addEventListener("click", function () {
+        vm.toStarting(true);
+        if (this.value.length > 0)
+            getPredictions(this.value, this);
+        else
+            vm.setPredictions(null);
+    });
 
     function makeMarkerIcon(icon) {
         var markerImage = new google.maps.MarkerImage(
@@ -117,7 +132,7 @@ function initMap() {
             },function (results,status) {
                 if(status==google.maps.GeocoderStatus.OK){
                     if(results[1]){
-                        console.log(results[1]);
+                        // console.log(results[1]);
                         marker.formattedAddress=results[1].formatted_address;
                     }
                     else {
@@ -141,7 +156,8 @@ function initMap() {
                 vm.searchBtnIcon(vm.searchBtn.image());
                 addInfoWin(this, map);
                 vm.isBtnGroupHidden(false);
-                console.log(this.position.lat());
+
+                // console.log(this.position.lat());
             });
         });
     };
@@ -180,13 +196,13 @@ function initMap() {
 function getPredictions(input, target) {
     service.getQueryPredictions({input: input}, getAutoPlaces);
 
-    function getAutoPlaces(predications, status) {
-        if(predications==null){
+    function getAutoPlaces(predictions, status) {
+        if(predictions==null){
             console.log("No location entered.");
             return;
         }
         if (status == google.maps.places.PlacesServiceStatus.OK) {
-            vm.setPredictions(predications);
+            vm.setPredictions(predictions);
         }
         else {
             vm.setPredictions();
@@ -234,7 +250,7 @@ function getPlaces() {
         bounds:map.getBounds()
     },function (results,status) {
         if(status==google.maps.places.PlacesServiceStatus.OK){
-            // console.log(results);
+            console.log(results);
             createPlacesMarkers(results,true);
         }
     });
@@ -243,13 +259,14 @@ function getPlaces() {
 
 function getSinglePlace(place) {
     var placesService=new google.maps.places.PlacesService(map);
-    console.log(place);
+    // console.log(place);
+
     placesService.textSearch({
         query:place,
         bounds:map.getBounds()
     },function (results,status) {
         if(status==google.maps.places.PlacesServiceStatus.OK){
-            console.log(results);
+            // console.log(results);
             createPlacesMarkers(results,false);
         }
     });
@@ -288,7 +305,7 @@ function createPlacesMarkers(places,flag) {
 
     else{
         var place=places[0];
-        console.log(place);
+        // console.log(place);
         var marker = new google.maps.Marker({
             map: map,
             title: place.name,
@@ -297,6 +314,7 @@ function createPlacesMarkers(places,flag) {
             formattedAddress: place.formatted_address
         });
         placeMarkers.push(marker);
+        vm.currentMarker(this);
         marker.addListener("click", function () {
             vm.currentMarker(this);
             map.panTo(this.position);
@@ -306,6 +324,7 @@ function createPlacesMarkers(places,flag) {
             vm.searchBtnIcon(vm.searchBtn.image());
             addInfoWin(this, map);
             vm.isBtnGroupHidden(false);
+
             console.log(this);
         });
         if (place.geometry.viewport) {
@@ -316,6 +335,25 @@ function createPlacesMarkers(places,flag) {
     }
 
     map.fitBounds(bounds);
+};
+
+function getFirstPredictions(input) {
+    console.log(input)
+    service.getQueryPredictions({input: input}, getAutoPlaces);
+    function getAutoPlaces(predictions, status) {
+        if(predictions==null){
+            console.log("No location entered.");
+            return;
+        }
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+            console.log(predictions)
+            vm.firstPrediction(predictions[0].description);
+
+        }
+        else {
+            console.log("Request failed.");
+        }
+    }
 };
 
 function markerOnClick() {
