@@ -167,7 +167,7 @@ div.route {
 
 div.list-predictions-container {
     position: relative;
-    width: inherit;
+    width: 100%;
     background-color: white;
     /*border: 1px solid lightgrey;*/
     /*border-top:none;*/
@@ -177,14 +177,14 @@ div.list-predictions-container {
 ul.list-predictions {
     padding-left: 0;
     margin-bottom: 0;
-    width: inherit;
+    width: 100%;
 }
 
 ul.list-predictions li {
     width: 100%;
     font-size: 1.1em;
     padding: 10px;
-    height: 55px;
+    height: auto;
     line-height: 23px;
     border-bottom: 1px solid rgba(121, 122, 124,0.6);
     overflow:hidden;
@@ -196,6 +196,7 @@ ul.list-predictions li {
     border: none;
     height: 100%;
     padding: 0;
+    width: 100%;
 }
 
 div#result {
@@ -206,5 +207,7 @@ div#result {
 #result li div.prediction {
     width: 380px;
 }
+
+
 
 

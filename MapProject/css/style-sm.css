@@ -108,3 +108,8 @@ div.input-route-buttons img {
     margin: 0 auto;
 }
 
+div.prediction,
+#result li div.prediction {
+    width: 85%;
+}
+
