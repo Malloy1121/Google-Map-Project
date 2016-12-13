@@ -56,8 +56,8 @@
       <file leaf-file-name="controller.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-708">
-              <caret line="232" column="41" lean-forward="true" selection-start-line="232" selection-start-column="41" selection-end-line="232" selection-end-column="41" />
+            <state relative-caret-position="242">
+              <caret line="91" column="54" lean-forward="true" selection-start-line="91" selection-start-column="54" selection-end-line="91" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -86,8 +86,8 @@
       <file leaf-file-name="map.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/map.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
-              <caret line="200" column="2" lean-forward="false" selection-start-line="200" selection-start-column="2" selection-end-line="200" selection-end-column="2" />
+            <state relative-caret-position="1249">
+              <caret line="380" column="36" lean-forward="false" selection-start-line="380" selection-start-column="36" selection-end-line="380" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -284,12 +284,12 @@
       <option name="presentableId" value="Default" />
       <updated>1481561499172</updated>
       <workItem from="1481561510258" duration="14806000" />
-      <workItem from="1481645226207" duration="9155000" />
+      <workItem from="1481645226207" duration="10442000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24974000" />
+    <option name="totallyTimeSpent" value="26261000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -458,16 +458,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/controller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-708">
-          <caret line="232" column="41" lean-forward="true" selection-start-line="232" selection-start-column="41" selection-end-line="232" selection-end-column="41" />
+        <state relative-caret-position="242">
+          <caret line="91" column="54" lean-forward="true" selection-start-line="91" selection-start-column="54" selection-end-line="91" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/map.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="200" column="2" lean-forward="false" selection-start-line="200" selection-start-column="2" selection-end-line="200" selection-end-column="2" />
+        <state relative-caret-position="1249">
+          <caret line="380" column="36" lean-forward="false" selection-start-line="380" selection-start-column="36" selection-end-line="380" selection-end-column="36" />
           <folding />
         </state>
       </provider>

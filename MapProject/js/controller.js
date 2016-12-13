@@ -98,6 +98,7 @@ function VM() {
             this.location.starting("");
             this.isDestReady(false);
             this.isStartingReady(false);
+            // console.log("mmm");
             this.isBtnGroupHidden(true);
             this.setPredictions(null);
             placeMarkers.forEach(function (each) {

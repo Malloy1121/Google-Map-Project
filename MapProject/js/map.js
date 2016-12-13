@@ -368,7 +368,8 @@ function getFirstPredictions(input) {
 function displayDirections() {
     // var start = new google.maps.LatLng(vm.startingMarker().position.lat(), vm.startingMarker().position.lng());
     // var end = new google.maps.LatLng(vm.destMarker().position.lat(), vm.destMarker().position.lng());
-
+    // directionsRenderer.setDirections(null);
+    directionsRenderer.setMap(null);
     directionsService.route({
         origin:vm.startingMarker().formattedAddress,
         destination:vm.destMarker().formattedAddress,
