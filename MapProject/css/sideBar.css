@@ -20,7 +20,7 @@ div.sideBar_open {
 }
 
 div.sideBar_close {
-    transform: translateX(-482px);
+    transform: translateX(-500px);
 }
 
 div.sideBar_hidden {

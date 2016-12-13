@@ -53,17 +53,17 @@ function VM() {
     this.toStarting=ko.observable(false);
     this.currentSlide=ko.observable(this.slide.image());
     this.currentNavSlide=ko.observable(this.navSlide.image())
-    this.modes=[new Mode("drive","images/sports-car.svg"),
-        new Mode("walking","images/pedestrian-walking.svg"),
-        new Mode("bike","images/bicycle.svg"),
-        new Mode("transit","images/underground.svg")];
+    this.modes=[new Mode("DRIVING","images/sports-car.svg"),
+        new Mode("WALKING","images/pedestrian-walking.svg"),
+        new Mode("BICYCLING","images/bicycle.svg"),
+        new Mode("TRANSIT","images/underground.svg")];
     this.modes[0].isSelected(true);
-    this.currentMode=this.modes[0];
+    this.currentMode=ko.observable(this.modes[0]);
     this.selectMode=function () {
         self.modes.forEach(function (e) {
             e.isSelected(false);
         });
-        self.currentMode=this;
+        self.currentMode(this);
         this.isSelected(true);
     };
 
@@ -90,6 +90,7 @@ function VM() {
 
         else {
             this.isSideBarOpen(!this.isSideBarOpen());
+            directionsRenderer.setMap(null);
         }
 
         if(!this.isSideBarOpen()){
@@ -235,7 +236,11 @@ function VM() {
 
 
         getPlaces();
-
+        if(placeMarkers.length>0) {
+            console.log(placeMarkers[0])
+            self.destMarker(placeMarkers[0]);
+            self.isDestReady(true);
+        }
     };
 
     this.setSingleMarker=function (prediction,event) {
@@ -243,7 +248,7 @@ function VM() {
         vm.searchBtnIcon(vm.searchBtn.image());
         placeMarkers.forEach(function (each) {
             if(each==self.destMarker()||each==self.startingMarker()) {
-                console.log(123321)
+                //console.log(123321)
                 return;
             }
             each.setMap(null);
@@ -273,18 +278,19 @@ function VM() {
         }
         self.predictions(null);
 
-
+        //console.log(self.currentMarker());
 
 
     };
 
     this.showDirection=function () {
+        console.log(self.startingMarker()," ",self.destMarker());
         if(!this.isNavBackHidden()){
             this.isNavBackHidden(true);
         }
-        else {
-            this.isSideBarOpen(!this.isSideBarOpen());
-        }
+
+        if(this.isDestReady()&&this.isStartingReady())
+            displayDirections();
     };
 
 }

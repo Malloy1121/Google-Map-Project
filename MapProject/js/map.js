@@ -10,7 +10,9 @@ var info_win_HTML='<div id="info_title"></div><div id="street_view"></div>';
 var infoWin;
 var geocoder;
 var service;
-
+var trafficLayer;
+var directionsService;
+var directionsRenderer;
 
 var styles = [
     {
@@ -61,6 +63,11 @@ function initMap() {
     infoWin = new google.maps.InfoWindow();
     geocoder=new google.maps.Geocoder();
     service = new google.maps.places.AutocompleteService();
+    trafficLayer = new google.maps.TrafficLayer();
+    // trafficLayer.setMap(map);
+    directionsService = new google.maps.DirectionsService;
+    directionsRenderer = new google.maps.DirectionsRenderer;
+
 
     input.addEventListener("keyup", function () {
         vm.toStarting(false);
@@ -164,11 +171,7 @@ function initMap() {
 
     showMarkers();
 
-    function hideMarkers(array) {
-        array.forEach(function (each) {
-            each.setMap(null);
-        })
-    };
+
 
     search.addEventListener("click",function () {
         info_win.innerHTML="";
@@ -191,7 +194,11 @@ function initMap() {
 
 
 
-
+function hideMarkers(array) {
+    array.forEach(function (each) {
+        each.setMap(null);
+    })
+};
 
 function getPredictions(input, target) {
     service.getQueryPredictions({input: input}, getAutoPlaces);
@@ -301,6 +308,8 @@ function createPlacesMarkers(places,flag) {
                 bounds.extend(each.geometry.location);
             }
         });
+        vm.destMarker(placeMarkers[0]);
+        vm.isDestReady(true);
     }
 
     else{
@@ -314,7 +323,7 @@ function createPlacesMarkers(places,flag) {
             formattedAddress: place.formatted_address
         });
         placeMarkers.push(marker);
-        vm.currentMarker(this);
+        vm.currentMarker(marker);
         marker.addListener("click", function () {
             vm.currentMarker(this);
             map.panTo(this.position);
@@ -356,6 +365,23 @@ function getFirstPredictions(input) {
     }
 };
 
-function markerOnClick() {
+function displayDirections() {
+    // var start = new google.maps.LatLng(vm.startingMarker().position.lat(), vm.startingMarker().position.lng());
+    // var end = new google.maps.LatLng(vm.destMarker().position.lat(), vm.destMarker().position.lng());
 
+    directionsService.route({
+        origin:vm.startingMarker().formattedAddress,
+        destination:vm.destMarker().formattedAddress,
+        travelMode:vm.currentMode().mode
+    },function (result,status) {
+        if(status=="OK"){
+            directionsRenderer.setDirections(result);
+            hideMarkers(placeMarkers);
+            vm.destMarker().setMap(null);
+            vm.startingMarker().setMap(null);
+            directionsRenderer.setMap(map);
+        }
+        else
+            console.log('Directions request failed due to ' + status);
+    })
 }
