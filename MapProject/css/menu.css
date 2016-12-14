@@ -1,0 +1,96 @@
+div.menu-container {
+    width: 100%;
+}
+
+div.menu {
+    height: 100%;
+    width: 350px;
+    position: absolute;
+    background-color: white;
+    top: 0px;
+    left: 0px;
+    transform: translateX(0px);
+    transition: transform 0.2s;
+    z-index: 5;
+}
+
+div.menu.menu_hidden {
+    transform: translateX(-350px);
+}
+
+div.menu-background {
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: 0;
+    z-index: 4;
+}
+
+div.menu_background_open {
+    height: 100%;
+    width: 100%;
+    min-width: 1000px;
+    background-color: lightgrey;
+    opacity: 0.5;
+
+}
+
+div.savedLoactions {
+    /*border:1px lightgrey solid;*/
+    border-right: none;
+    border-left: none;
+}
+
+div.savedLoactions ul.list-predictions li {
+    border-top: 1px lightgrey solid;
+    border-bottom: none;
+}
+
+div.savedLoactions ul.list-predictions li:last-child {
+    border-bottom: 1px lightgrey solid;
+}
+
+ul.preference-list {
+    margin: 0;
+    padding: 5px 20px;
+}
+
+div.preference-text {
+    width: 250px;
+    text-overflow: ellipsis;
+    text-align: left;
+    text-indent: 1.5em;
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+button.btn-pre {
+    background: none;
+    border: none;
+}
+
+button.btn-pre>div {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.preference_able {
+    color: rgb(66, 133, 244);
+    fill: rgb(66, 133, 244);
+    width: inherit;
+}
+
+#Capa_1 {
+    height: 30px;
+    width: 30px;
+    display: block;
+}
+
+.btn-savedlocation {
+    height: 30px;
+    width: 60%;
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

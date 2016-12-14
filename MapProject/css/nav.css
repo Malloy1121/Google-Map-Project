@@ -70,14 +70,16 @@ input:focus {
 
 }
 
-table, tbody,tr {
+table.button-group-table,
+table.button-group-table tbody,
+table.button-group-table tr {
     display: block;
     margin:0 auto;
     text-align: center;
     color:rgb(66, 133, 244);
 }
 
-td {
+table.button-group-table td {
     margin:0 auto;
     width: 120px;
     text-align: center;
@@ -128,7 +130,7 @@ div#info_win {
 }
 
 div#street_view {
-    height: 420px;
+    height: 320px;
 }
 
 div#info_title {

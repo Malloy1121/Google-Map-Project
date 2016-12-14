@@ -9,14 +9,31 @@ html, body {
     min-width: 270px;
 }
 
+div#routes {
+    overflow-y: auto;
+    height: 100%;
+    max-height: calc(100% - 150px);
+    padding: 5px 20px;
+}
+
+div.adp {
+    height: inherit;
+}
+
+td.adp-substep{
+    z-index: 2;
+}
+
 
 @media screen and (min-width: 501px) {
     html, body  {
         min-width:1000px;
         min-height: 500px;
     }
-    div.information,div.side-bar {
-        min-height: 500px;
-    }
+    /*div.information,div.side-bar {*/
+        /*min-height: 500px;*/
+    /*}*/
 }
+
+
 

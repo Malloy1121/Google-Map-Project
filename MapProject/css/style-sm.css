@@ -113,3 +113,11 @@ div.prediction,
     width: 85%;
 }
 
+div.menu {
+    width: 100%;
+}
+
+div.menu_background_open {
+    display: none;
+}
+

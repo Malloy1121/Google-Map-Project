@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/sideBar.css">
+    <link rel="stylesheet" href="css/menu.css">
     <link rel="stylesheet" href="css/style-sm.css" media="screen and (max-width:500px)">
     <link rel="stylesheet" href="css/map.css">
     <script src="bower_components/knockout/dist/knockout.js"></script>
@@ -19,7 +20,7 @@
 <div id="nav" data-bind="style:{display:isSideBarOpen()?'none':'inline-block'},css:{'navHidden':!isNavHidden()}">
     <div class="search-bar">
         <div class="container-button-burger">
-            <button class="glyphicon glyphicon-menu-hamburger"></button>
+            <button class="glyphicon glyphicon-menu-hamburger" data-bind="click:openMenu"></button>
         </div>
         <div class="input-address-container">
             <input type="text" id="input" placeholder="Search Google Maps" data-bind="value:location.destination,click:openInputList">
@@ -43,15 +44,15 @@
 
 </div>
 <div class="information display_none" data-bind="css:{'navHidden':!isNavHidden(),'display_none':isNavBackHidden}">
+    <div class="blue_back"></div>
     <div class="info_back">
     <div id="nav_back">
-        <div class="blue_back"></div>
         <div id="info_win">
         </div>
 
     </div>
         <div class="button-group" data-bind="css:{'display_none':isBtnGroupHidden}">
-            <table>
+            <table class="button-group-table">
                 <tr>
                     <td><button class="btn-glyph-lg btn-glyph" data-bind="click:setStartingMarker">
                         <div><img src="images/location-pin.svg" alt="starting"></div>
@@ -75,8 +76,8 @@
     </div>
 
 </div>
-<div id="map" data-bind="click:closeSideBar">
 
+<div id="map" data-bind="click:closeSideBar">
 </div>
 
 <div class="side-bar sideBar_close" data-bind="css:{'sideBar_open':isSideBarOpen(),'sideBar_close':!isSideBarOpen(),'sideBar_hidden':isSideBarHidden()}">
@@ -116,18 +117,91 @@
         </div>
     </div>
     <div id="routes">
-        <div class="route">1</div>
-        <div class="route">1</div>
     </div>
+</div>
+
+<div class="menu-container">
+    <div class="menu" data-bind="css:{'menu_hidden':!isMenuOpen()}">
+        <div class="menu-header">
+            <h3 style="text-align: center;margin-top: 10px">My Preference</h3>
+        </div>
+        <hr>
+        <div class="options-container">
+            <h4>Display preference</h4>
+            <ul class="preference-list" >
+                <li data-bind="click:toggleShowTraffic,css:{'preference_able':isShowTraffic()}">
+                    <button class="btn-pre">
+                        <div>
+                            <!--<img class="icon_prediction" src="images/traffic-light.svg" data-bind="css:{'preference_able':isShowTraffic()}">-->
+                            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="459px" height="459px" viewBox="0 0 459 459" style="enable-background:new 0 0 459 459;" xml:space="preserve">
+<g>
+	<g id="traffic">
+		<path d="M433.5,178.5H357v-28.05c43.35-10.2,76.5-51,76.5-99.45H357V25.5C357,10.2,346.8,0,331.5,0h-204
+			C112.2,0,102,10.2,102,25.5V51H25.5c0,48.45,33.15,86.7,76.5,99.45v28.05H25.5c0,48.45,33.15,86.7,76.5,99.45V306H25.5
+			c0,48.45,33.15,86.7,76.5,99.45v28.05c0,15.3,10.2,25.5,25.5,25.5h204c15.3,0,25.5-10.2,25.5-25.5v-28.05
+			c43.35-10.2,76.5-51,76.5-99.45H357v-28.05C400.35,265.2,433.5,226.95,433.5,178.5z M229.5,408c-28.05,0-51-22.95-51-51
+			s22.95-51,51-51s51,22.95,51,51S257.55,408,229.5,408z M229.5,280.5c-28.05,0-51-22.95-51-51s22.95-51,51-51s51,22.95,51,51
+			S257.55,280.5,229.5,280.5z M229.5,153c-28.05,0-51-22.95-51-51s22.95-51,51-51s51,22.95,51,51S257.55,153,229.5,153z"/>
+	</g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+                        </div>
+                        <div class="preference-text">Traffic</div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="savedLoactions" data-bind="css:{'display_none':savedLocations().length==0}">
+            <hr>
+            <h4>My locations</h4>
+            <ul class="list-predictions" data-bind="foreach:savedLocations">
+                <li><button class="btn-pre btn-savedlocation"  data-bind="text:title"></button></li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="menu-background" data-bind="css:{'menu_background_open':isMenuOpen()},click:closeMenu"></div>
 </div>
 
 <script src="js/controller.js"></script>
 <script src="js/map.js"></script>
-<!--<script  async defer-->
-         <!--src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCadwJpNLlZz4ylftxHZFubT5sWWYopuPU&callback=initMap">-->
-<!--</script>-->
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCEaRCrbjyEdpBjVSpzVN5Gy0qTF34WC8s&callback=initMap">
+<script  async defer
+         src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCadwJpNLlZz4ylftxHZFubT5sWWYopuPU&callback=initMap">
 </script>
+<!--<script async defer-->
+        <!--src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCEaRCrbjyEdpBjVSpzVN5Gy0qTF34WC8s&callback=initMap">-->
+<!--</script>-->
 </body>
 </html>

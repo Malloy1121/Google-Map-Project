@@ -39,9 +39,11 @@ function VM() {
     this.isInputListClose=ko.observable(true);
     this.isNavBackHidden=ko.observable(true);
     this.isNavHidden=ko.observable(true);
+    this.isMenuOpen=ko.observable(false);
     this.isBtnGroupHidden=ko.observable(true);
     this.isStartingReady=ko.observable(false);
     this.isDestReady=ko.observable(false);
+    this.isShowTraffic=ko.observable(false);
     this.slide=new SlideButton(false);
     this.searchBtn=new SearchButton(true);
     this.searchBtnIcon=ko.observable(this.searchBtn.image());
@@ -67,19 +69,35 @@ function VM() {
         this.isSelected(true);
     };
 
+    this.toggleShowTraffic=function () {
+        self.isShowTraffic(!self.isShowTraffic());
+        if(self.isShowTraffic())
+            trafficLayer.setMap(map);
+        else
+            trafficLayer.setMap(null);
+    }
+
+    this.openMenu=function () {
+        this.isMenuOpen(true);
+        console.log(this.isMenuOpen());
+    };
+    this.closeMenu=function () {
+        this.isMenuOpen(false);
+    }
+
     this.toggleSideBar=function () {
-        if(this.isSideBarOpen()){
-            if(self.startingMarker()) {
-                console.log(self.startingMarker());
-                self.startingMarker().setMap(null);
-                self.startingMarker(null);
-            }
-            if(self.destMarker()) {
-                console.log(self.destMarker());
-                self.destMarker().setMap(null);
-                self.destMarker(null);
-            }
-        }
+        // if(this.isSideBarOpen()){
+        //     if(self.startingMarker()) {
+        //         console.log(self.startingMarker());
+        //         self.startingMarker().setMap(null);
+        //         self.startingMarker(null);
+        //     }
+        //     if(self.destMarker()) {
+        //         console.log(self.destMarker());
+        //         self.destMarker().setMap(null);
+        //         self.destMarker(null);
+        //     }
+        // }
 
 
         if(!this.isNavBackHidden()){
@@ -106,14 +124,23 @@ function VM() {
                     each.setMap(null);
                     each=null;
                 });
-                markers.forEach(function (each) {
-                    each.setMap(null);
-                });
+                hideMarkers(markers);
                 placeMarkers = [];
             }
         }
 
         if(!this.isSideBarOpen()){
+            if(self.startingMarker()) {
+                console.log(self.startingMarker());
+                self.startingMarker().setMap(null);
+                self.startingMarker(null);
+            }
+            if(self.destMarker()) {
+                console.log(self.destMarker());
+                self.destMarker().setMap(null);
+                self.destMarker(null);
+            }
+            routes.innerHTML="";
             this.location.destination("");
             this.location.starting("");
             this.isDestReady(false);
@@ -212,15 +239,25 @@ function VM() {
     };
 
     this.save=function () {
-        this.savedLocations.push(this.currentMarker);
-       console.log(this.savedLocations()[0]());
+        var flag=true;
+        this.savedLocations().forEach(function (each) {
+            if(each.formattedAddress==self.currentMarker().formattedAddress){
+                flag=false
+                return;
+            }
+        })
+        if(flag) {
+            this.savedLocations.push(this.currentMarker());
+            console.log(this.savedLocations());
+        }
     };
 
 
     this.setDestMarker=function(){
         //this.isNavBackHidden(true);
         this.destMarker(this.currentMarker());
-        this.toggleSideBar();
+        this.isNavBackHidden(true);
+        this.isSideBarOpen(true);
         this.isSideBarOpen(true);
         this.location.destination(this.currentMarker().formattedAddress);
         this.isDestReady(true);
@@ -228,7 +265,9 @@ function VM() {
 
     this.setStartingMarker=function () {
         this.startingMarker(this.currentMarker());
-        this.toggleSideBar();
+        // this.toggleSideBar();
+        this.isNavBackHidden(true);
+        this.isSideBarOpen(true);
         this.isSideBarOpen(true);
         this.location.starting(this.currentMarker().formattedAddress);
         this.isStartingReady(true);
@@ -237,16 +276,16 @@ function VM() {
     this.setMarkers=function (prediction,event) {
         self.setLocation(prediction);
         placeMarkers.forEach(function (each) {
-            if(each==self.destMarker()||each==self.startingMarker())
-                return;
+            // if(each==self.destMarker()||each==self.startingMarker())
+            //     return;
             each.setMap(null);
         });
         placeMarkers=[];
 
-        markers.forEach(function (each) {
-            each.setMap(null);
-        });
-
+       hideMarkers(markers);
+        // self.isNavBackHidden(true);
+        // self.searchBtn.flag=true;
+        // self.searchBtnIcon(self.searchBtn.image());
         self.location.destination(prediction.description);
         getPlaces();
         // if(placeMarkers.length>0) {
@@ -269,9 +308,7 @@ function VM() {
         });
         // placeMarkers=[];
 
-        markers.forEach(function (each) {
-            each.setMap(null);
-        });
+        hideMarkers(markers);
 
         getSinglePlace(prediction.description);
 

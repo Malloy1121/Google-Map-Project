@@ -178,6 +178,7 @@ ul.list-predictions {
     padding-left: 0;
     margin-bottom: 0;
     width: 100%;
+    background-color: white;
 }
 
 ul.list-predictions li {
@@ -188,20 +189,28 @@ ul.list-predictions li {
     line-height: 23px;
     border-bottom: 1px solid rgba(121, 122, 124,0.6);
     overflow:hidden;
-
+    background-color: white;
 }
 
+
+
 .btn-result {
-    background:none;
+    background-color: white;
     border: none;
     height: 100%;
     padding: 0;
     width: 100%;
 }
 
+.btn-result div {
+    display: inline-block;
+}
+
 div#result {
     width: 100%;
     padding-left: 0;
+    position: absolute;
+    z-index: 4;
 }
 
 #result li div.prediction {

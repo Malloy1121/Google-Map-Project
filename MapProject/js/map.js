@@ -6,6 +6,7 @@ var dest=document.getElementById("dest");
 var staring=document.getElementById("starting");
 var search=document.getElementById("search");
 var info_win=document.getElementById("info_win");
+var routes=document.getElementById("routes");
 var info_win_HTML='<div id="info_title"></div><div id="street_view"></div>';
 var infoWin;
 var geocoder;
@@ -67,10 +68,11 @@ function initMap() {
     service = new google.maps.places.AutocompleteService();
     trafficLayer = new google.maps.TrafficLayer();
     streetViewService = new google.maps.StreetViewService();
-    trafficLayer.setMap(map);
+    //trafficLayer.setMap(map);
     directionsService = new google.maps.DirectionsService;
     directionsRenderer = new google.maps.DirectionsRenderer;
     directionsRenderer.setMap(map);
+    directionsRenderer.setPanel(routes);
     placesService=new google.maps.places.PlacesService(map);
 
 
@@ -195,7 +197,7 @@ function initMap() {
     });
 
 };
-
+//initMap ends
 
 
 
@@ -314,6 +316,7 @@ function createPlacesMarkers(places,flag) {
                 bounds.extend(each.geometry.location);
             }
         });
+        addInfoWin(placeMarkers[0], map);
         vm.destMarker(placeMarkers[0]);
         vm.isDestReady(true);
         map.fitBounds(bounds);
