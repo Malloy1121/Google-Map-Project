@@ -398,8 +398,7 @@ function getFirstPredictions(input) {
 function displayDirections() {
     // var start = new google.maps.LatLng(vm.startingMarker().position.lat(), vm.startingMarker().position.lng());
     // var end = new google.maps.LatLng(vm.destMarker().position.lat(), vm.destMarker().position.lng());
-    // directionsRenderer.setDirections(null);
-    directionsRenderer.setMap(map);
+    directionsRenderer.setMap(null);
     directionsService.route({
         origin:vm.startingMarker().formattedAddress,
         destination:vm.destMarker().formattedAddress,
@@ -411,7 +410,7 @@ function displayDirections() {
             hideMarkers(placeMarkers);
             vm.destMarker().setMap(null);
             vm.startingMarker().setMap(null);
-
+            directionsRenderer.setMap(map);
         }
         else {
             console.log('Directions request failed due to ' + status);

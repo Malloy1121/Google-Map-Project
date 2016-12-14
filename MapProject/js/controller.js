@@ -77,7 +77,7 @@ function VM() {
             if(self.destMarker()) {
                 console.log(self.destMarker());
                 self.destMarker().setMap(null);
-                self.startingMarker(null);
+                self.destMarker(null);
             }
         }
 
@@ -86,11 +86,31 @@ function VM() {
             this.isNavBackHidden(true);
             this.searchBtn.flag=true;
             this.searchBtnIcon(this.searchBtn.image());
+            placeMarkers.forEach(function (each) {
+                if(each==self.destMarker()||each==self.startingMarker())
+                    return;
+                each.setMap(null);
+            });
+            markers.forEach(function (each) {
+                if(each==self.destMarker()||each==self.startingMarker())
+                    return;
+                each.setMap(null);
+            });
         }
 
         else {
             this.isSideBarOpen(!this.isSideBarOpen());
             directionsRenderer.setMap(null);
+            if(!this.isSideBarOpen()) {
+                placeMarkers.forEach(function (each) {
+                    each.setMap(null);
+                    each=null;
+                });
+                markers.forEach(function (each) {
+                    each.setMap(null);
+                });
+                placeMarkers = [];
+            }
         }
 
         if(!this.isSideBarOpen()){
@@ -101,13 +121,6 @@ function VM() {
             // console.log("mmm");
             this.isBtnGroupHidden(true);
             this.setPredictions(null);
-            placeMarkers.forEach(function (each) {
-                each.setMap(null);
-            });
-            markers.forEach(function (each) {
-                each.setMap(null);
-            });
-            placeMarkers=[];
             this.searchBtn.flag=true;
             this.searchBtnIcon(this.searchBtn.image());
         }
@@ -134,6 +147,7 @@ function VM() {
     };
 
     this.openInputList=function () {
+        this.toStarting(false);
         this.isInputListClose(false);
     };
 
@@ -263,17 +277,11 @@ function VM() {
 
         if(self.toStarting()) {
             self.location.starting(prediction.description);
-            // self.startingMarker(self.currentMarker());
-            // console.log(self.currentMarker(),self.startingMarker());
-            // self.isStartingReady(true);
             if(self.isDestReady()&&self.isStartingReady())
                 self.showDirection();
         }
         else {
             self.location.destination(prediction.description);
-            // self.destMarker(self.currentMarker());
-            // console.log(self.currentMarker(),self.destMarker());
-            // self.isDestReady(true);
             if(self.isDestReady()&&self.isStartingReady())
                 self.showDirection();
 
