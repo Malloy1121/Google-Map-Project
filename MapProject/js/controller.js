@@ -102,8 +102,6 @@ function VM() {
             this.isBtnGroupHidden(true);
             this.setPredictions(null);
             placeMarkers.forEach(function (each) {
-                if(each==self.destMarker()||each==self.startingMarker())
-                    return;
                 each.setMap(null);
             });
             markers.forEach(function (each) {
@@ -235,18 +233,19 @@ function VM() {
             each.setMap(null);
         });
 
-
+        self.location.destination(prediction.description);
         getPlaces();
-        if(placeMarkers.length>0) {
-            console.log(placeMarkers[0])
-            self.destMarker(placeMarkers[0]);
-            self.isDestReady(true);
-        }
+        // if(placeMarkers.length>0) {
+        //     console.log(placeMarkers[0])
+        //     self.destMarker(placeMarkers[0]);
+        //     self.isDestReady(true);
+        // }
     };
 
     this.setSingleMarker=function (prediction,event) {
-        vm.searchBtn.flag = true;
-        vm.searchBtnIcon(vm.searchBtn.image());
+        // console.log(prediction);
+        self.searchBtn.flag = true;
+        self.searchBtnIcon(vm.searchBtn.image());
         placeMarkers.forEach(function (each) {
             if(each==self.destMarker()||each==self.startingMarker()) {
                 //console.log(123321)
@@ -264,16 +263,18 @@ function VM() {
 
         if(self.toStarting()) {
             self.location.starting(prediction.description);
-            self.startingMarker(self.currentMarker());
-            self.isStartingReady(true);
-            if(self.isDestReady())
+            // self.startingMarker(self.currentMarker());
+            // console.log(self.currentMarker(),self.startingMarker());
+            // self.isStartingReady(true);
+            if(self.isDestReady()&&self.isStartingReady())
                 self.showDirection();
         }
         else {
             self.location.destination(prediction.description);
-            self.destMarker(self.currentMarker());
-            self.isDestReady(true);
-            if(self.isStartingReady())
+            // self.destMarker(self.currentMarker());
+            // console.log(self.currentMarker(),self.destMarker());
+            // self.isDestReady(true);
+            if(self.isDestReady()&&self.isStartingReady())
                 self.showDirection();
 
         }
@@ -285,12 +286,12 @@ function VM() {
     };
 
     this.showDirection=function () {
-        console.log(self.startingMarker()," ",self.destMarker());
-        if(!this.isNavBackHidden()){
-            this.isNavBackHidden(true);
+        // console.log(self.startingMarker()," ",self.destMarker());
+        if(!self.isNavBackHidden()){
+            self.isNavBackHidden(true);
         }
 
-        if(this.isDestReady()&&this.isStartingReady())
+        if(self.isDestReady()&&self.isStartingReady())
             displayDirections();
     };
 

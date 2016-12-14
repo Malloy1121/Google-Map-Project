@@ -13,6 +13,8 @@ var service;
 var trafficLayer;
 var directionsService;
 var directionsRenderer;
+var streetViewService;
+var placesService;
 
 var styles = [
     {
@@ -64,13 +66,16 @@ function initMap() {
     geocoder=new google.maps.Geocoder();
     service = new google.maps.places.AutocompleteService();
     trafficLayer = new google.maps.TrafficLayer();
-    // trafficLayer.setMap(map);
+    streetViewService = new google.maps.StreetViewService();
+    trafficLayer.setMap(map);
     directionsService = new google.maps.DirectionsService;
     directionsRenderer = new google.maps.DirectionsRenderer;
+    directionsRenderer.setMap(map);
+    placesService=new google.maps.places.PlacesService(map);
 
 
     input.addEventListener("keyup", function () {
-        vm.toStarting(false);
+        // vm.toStarting(false);
         if (this.value!=""&&this.value.length > 0) {
             getPredictions(this.value, this);
         }
@@ -80,7 +85,7 @@ function initMap() {
 
 
     dest.addEventListener("keyup", function () {
-        vm.toStarting(false);
+        // vm.toStarting(false);
         if (this.value.length > 0)
             getPredictions(this.value, this);
         else
@@ -219,7 +224,7 @@ function getPredictions(input, target) {
 };
 
 function addInfoWin(marker, map) {
-    var streetViewService = new google.maps.StreetViewService();
+    // var streetViewService = new google.maps.StreetViewService();
     info_win.innerHTML=info_win_HTML;
     var streetView=document.getElementById("street_view");
     if (infoWin.marker == marker) {
@@ -251,13 +256,13 @@ function addInfoWin(marker, map) {
 
 
 function getPlaces() {
-    var placesService=new google.maps.places.PlacesService(map);
+    // var placesService=new google.maps.places.PlacesService(map);
     placesService.textSearch({
         query:input.value,
         bounds:map.getBounds()
     },function (results,status) {
         if(status==google.maps.places.PlacesServiceStatus.OK){
-            console.log(results);
+            // console.log(results);
             createPlacesMarkers(results,true);
         }
     });
@@ -265,7 +270,7 @@ function getPlaces() {
 };
 
 function getSinglePlace(place) {
-    var placesService=new google.maps.places.PlacesService(map);
+    // var placesService=new google.maps.places.PlacesService(map);
     // console.log(place);
 
     placesService.textSearch({
@@ -280,6 +285,7 @@ function getSinglePlace(place) {
 };
 
 function createPlacesMarkers(places,flag) {
+    // console.log(places);
     var bounds=new google.maps.LatLngBounds();
     if(flag) {
         places.forEach(function (each) {
@@ -310,20 +316,21 @@ function createPlacesMarkers(places,flag) {
         });
         vm.destMarker(placeMarkers[0]);
         vm.isDestReady(true);
+        map.fitBounds(bounds);
     }
 
     else{
         var place=places[0];
         // console.log(place);
         var marker = new google.maps.Marker({
-            map: map,
+            map: null,
             title: place.name,
             position: place.geometry.location,
             id: place.place_id,
             formattedAddress: place.formatted_address
         });
-        placeMarkers.push(marker);
-        vm.currentMarker(marker);
+
+
         marker.addListener("click", function () {
             vm.currentMarker(this);
             map.panTo(this.position);
@@ -334,16 +341,39 @@ function createPlacesMarkers(places,flag) {
             addInfoWin(this, map);
             vm.isBtnGroupHidden(false);
 
-            console.log(this);
+            // console.log(this);
         });
+        placeMarkers.push(marker);
+        vm.currentMarker(marker);
+        if(vm.toStarting()) {
+            vm.startingMarker(vm.currentMarker());
+            vm.isStartingReady(true);
+            // console.log(vm.startingMarker());
+        }
+        else {
+            vm.destMarker(vm.currentMarker());
+            vm.isDestReady(true);
+            console.log(vm.destMarker());
+        }
+
+            // console.log(vm.currentMarker());
         if (place.geometry.viewport) {
             bounds.union(place.geometry.viewport);
         } else {
             bounds.extend(place.geometry.location);
         }
-    }
 
-    map.fitBounds(bounds);
+        if(vm.isDestReady()&&vm.isStartingReady())
+            vm.showDirection();
+        else {
+            marker.setMap(map);
+            map.fitBounds(bounds);
+        }
+
+        }
+
+
+
 };
 
 function getFirstPredictions(input) {
@@ -369,20 +399,23 @@ function displayDirections() {
     // var start = new google.maps.LatLng(vm.startingMarker().position.lat(), vm.startingMarker().position.lng());
     // var end = new google.maps.LatLng(vm.destMarker().position.lat(), vm.destMarker().position.lng());
     // directionsRenderer.setDirections(null);
-    directionsRenderer.setMap(null);
+    directionsRenderer.setMap(map);
     directionsService.route({
         origin:vm.startingMarker().formattedAddress,
         destination:vm.destMarker().formattedAddress,
         travelMode:vm.currentMode().mode
     },function (result,status) {
+        console.log(result);
         if(status=="OK"){
             directionsRenderer.setDirections(result);
             hideMarkers(placeMarkers);
             vm.destMarker().setMap(null);
             vm.startingMarker().setMap(null);
-            directionsRenderer.setMap(map);
+
         }
-        else
+        else {
             console.log('Directions request failed due to ' + status);
+            alert("No route found")
+        }
     })
 }
