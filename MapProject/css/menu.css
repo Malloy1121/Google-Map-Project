@@ -57,7 +57,7 @@ ul.preference-list {
 }
 
 div.preference-text {
-    width: 250px;
+    width: calc(100% - 35px);
     text-overflow: ellipsis;
     text-align: left;
     text-indent: 1.5em;
@@ -68,6 +68,8 @@ div.preference-text {
 button.btn-pre {
     background: none;
     border: none;
+    width: 100%;
+    display: block;
 }
 
 button.btn-pre>div {
