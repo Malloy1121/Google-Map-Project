@@ -121,3 +121,12 @@ div.menu_background_open {
     display: none;
 }
 
+
+div.btn-menuClose {
+    display: block;
+    background-color: rgb(66, 133, 244);
+    width: 100%;
+    height: 50px;
+    position: absolute;
+    top:calc(100% - 100px);
+}

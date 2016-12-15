@@ -102,7 +102,7 @@ div.information {
 }
 
 div.info_back {
-    height: inherit;
+    height: calc(100% - 75px);
     width: inherit;
     background-color: white;
     max-height: 100%;

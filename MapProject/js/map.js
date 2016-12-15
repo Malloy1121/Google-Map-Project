@@ -308,7 +308,7 @@ function createPlacesMarkers(places,flag) {
                 vm.searchBtnIcon(vm.searchBtn.image());
                 addInfoWin(this, map);
                 vm.isBtnGroupHidden(false);
-                console.log(this);
+                // console.log(this);
             });
             if (each.geometry.viewport) {
                 bounds.union(each.geometry.viewport);
@@ -346,6 +346,7 @@ function createPlacesMarkers(places,flag) {
 
             // console.log(this);
         });
+        addInfoWin(marker, map);
         placeMarkers.push(marker);
         vm.currentMarker(marker);
         if(vm.toStarting()) {
@@ -356,7 +357,7 @@ function createPlacesMarkers(places,flag) {
         else {
             vm.destMarker(vm.currentMarker());
             vm.isDestReady(true);
-            console.log(vm.destMarker());
+            // console.log(vm.destMarker());
         }
 
             // console.log(vm.currentMarker());
@@ -399,16 +400,15 @@ function getFirstPredictions(input) {
 };
 
 function displayDirections() {
-    // var start = new google.maps.LatLng(vm.startingMarker().position.lat(), vm.startingMarker().position.lng());
-    // var end = new google.maps.LatLng(vm.destMarker().position.lat(), vm.destMarker().position.lng());
     directionsRenderer.setMap(null);
     directionsService.route({
         origin:vm.startingMarker().formattedAddress,
         destination:vm.destMarker().formattedAddress,
-        travelMode:vm.currentMode().mode
+        travelMode:vm.currentMode().mode,
+        avoidTolls:vm.isAvoidTolls()
     },function (result,status) {
-        console.log(result);
-        if(status=="OK"){
+        // console.log(result);
+        if(status==google.maps.DirectionsStatus.OK){
             directionsRenderer.setDirections(result);
             hideMarkers(placeMarkers);
             vm.destMarker().setMap(null);
@@ -417,7 +417,6 @@ function displayDirections() {
         }
         else {
             console.log('Directions request failed due to ' + status);
-            alert("No route found")
         }
     })
 }
