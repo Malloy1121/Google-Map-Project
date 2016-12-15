@@ -88,6 +88,8 @@ function initMap() {
 
     dest.addEventListener("keyup", function () {
         // vm.toStarting(false);
+        vm.isShowPredictions(true);
+        vm.isDestReady(false);
         if (this.value.length > 0)
             getPredictions(this.value, this);
         else
@@ -96,6 +98,7 @@ function initMap() {
 
     dest.addEventListener("click", function () {
         vm.toStarting(false);
+        vm.isShowPredictions(!vm.isShowPredictions());
         if (this.value.length > 0)
             getPredictions(this.value, this);
         else
@@ -103,7 +106,9 @@ function initMap() {
     });
 
     staring.addEventListener("keyup", function () {
-        vm.toStarting(true);
+        // vm.toStarting(true);
+        vm.isStartingReady(false);
+        vm.isShowPredictions(true);
         if (this.value.length > 0)
             getPredictions(this.value, this);
         else
@@ -112,6 +117,8 @@ function initMap() {
 
     staring.addEventListener("click", function () {
         vm.toStarting(true);
+        vm.isShowPredictions(!vm.isShowPredictions());
+        console.log(vm.isShowPredictions());
         if (this.value.length > 0)
             getPredictions(this.value, this);
         else
@@ -126,7 +133,7 @@ function initMap() {
             new google.maps.Point(10, 34),
             new google.maps.Size(32, 32));
         return markerImage;
-    };
+    }
 
     function showMarkers() {
         locations.forEach(function (location) {
@@ -174,7 +181,7 @@ function initMap() {
                 // console.log(this.position.lat());
             });
         });
-    };
+    }
 
     showMarkers();
 
@@ -196,7 +203,7 @@ function initMap() {
         vm.searchBtnIcon(vm.searchBtn.image());
     });
 
-};
+}
 //initMap ends
 
 
@@ -205,7 +212,7 @@ function hideMarkers(array) {
     array.forEach(function (each) {
         each.setMap(null);
     })
-};
+}
 
 function getPredictions(input, target) {
     service.getQueryPredictions({input: input}, getAutoPlaces);
@@ -223,7 +230,7 @@ function getPredictions(input, target) {
             console.log("Request failed.");
         }
     }
-};
+}
 
 function addInfoWin(marker, map) {
     // var streetViewService = new google.maps.StreetViewService();
@@ -254,7 +261,7 @@ function addInfoWin(marker, map) {
     }
 
     streetViewService.getPanoramaByLocation(marker.position, 100, getStreetView);
-};
+}
 
 
 function getPlaces() {
@@ -269,7 +276,7 @@ function getPlaces() {
         }
     });
 
-};
+}
 
 function getSinglePlace(place) {
     // var placesService=new google.maps.places.PlacesService(map);
@@ -284,7 +291,7 @@ function getSinglePlace(place) {
             createPlacesMarkers(results,false);
         }
     });
-};
+}
 
 function createPlacesMarkers(places,flag) {
     // console.log(places);
@@ -348,15 +355,21 @@ function createPlacesMarkers(places,flag) {
         });
         addInfoWin(marker, map);
         placeMarkers.push(marker);
-        vm.currentMarker(marker);
+        // vm.currentMarker(marker);
         if(vm.toStarting()) {
-            vm.startingMarker(vm.currentMarker());
+            vm.startingMarker(marker);
+            console.log(vm.startingMarker());
             vm.isStartingReady(true);
+            vm.location.starting(vm.startingMarker().formattedAddress);
+            vm.showDirection();
             // console.log(vm.startingMarker());
         }
         else {
-            vm.destMarker(vm.currentMarker());
+            vm.destMarker(marker);
+            console.log(vm.destMarker());
             vm.isDestReady(true);
+            vm.location.destination(vm.destMarker().formattedAddress);
+            vm.showDirection();
             // console.log(vm.destMarker());
         }
 
@@ -367,8 +380,9 @@ function createPlacesMarkers(places,flag) {
             bounds.extend(place.geometry.location);
         }
 
-        if(vm.isDestReady()&&vm.isStartingReady())
-            vm.showDirection();
+        if(vm.isDestReady()&&vm.isStartingReady()) {
+            // vm.showDirection();
+        }
         else {
             marker.setMap(map);
             map.fitBounds(bounds);
@@ -378,7 +392,7 @@ function createPlacesMarkers(places,flag) {
 
 
 
-};
+}
 
 function getFirstPredictions(input) {
     console.log(input)
@@ -397,9 +411,11 @@ function getFirstPredictions(input) {
             console.log("Request failed.");
         }
     }
-};
+}
 
 function displayDirections() {
+    vm.location.starting(vm.startingMarker().formattedAddress);
+    vm.location.destination(vm.destMarker().formattedAddress);
     directionsRenderer.setMap(null);
     directionsService.route({
         origin:vm.startingMarker().formattedAddress,

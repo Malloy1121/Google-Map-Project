@@ -35,19 +35,22 @@ div.menu_background_open {
 
 }
 
-div.savedLoactions {
+div.savedLocations {
     /*border:1px lightgrey solid;*/
     border-right: none;
     border-left: none;
+    height: 100%;
+    max-height: calc(100% - 50px);
+    overflow: auto;
 }
 
-div.savedLoactions ul.list-predictions li {
+div.savedLocations ul.list-predictions li {
     border-top: 1px lightgrey solid;
     border-bottom: none;
-    padding:5px 0;
+    padding:5px 10px;
 }
 
-div.savedLoactions ul.list-predictions li:last-child {
+div.savedLocations ul.list-predictions li:last-child {
     border-bottom: 1px lightgrey solid;
 }
 
@@ -101,3 +104,10 @@ svg.Capa_1 {
 div.btn-menuClose {
     display: none;
 }
+
+/*.list-savedLocations {*/
+    /*height:inherit;*/
+    /*!*!*max-height: calc(100% - 10px);*!*!*/
+    /*!*!*height: 100%;*!*!*/
+    /*!*overflow: auto;*!*/
+/*}*/

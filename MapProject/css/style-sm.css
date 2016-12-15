@@ -67,8 +67,8 @@ div#street_view {
     height: 150px;
 }
 
-td {
-    width: 30%;
+table.button-group-table td {
+    width: calc((100% - 10px) / 3);
 }
 
 div#nav_close_sm {
@@ -110,7 +110,7 @@ div.input-route-buttons img {
 
 div.prediction,
 #result li div.prediction {
-    width: 85%;
+    width: calc(100% - 50px);
 }
 
 div.menu {
@@ -129,4 +129,17 @@ div.btn-menuClose {
     height: 50px;
     position: absolute;
     top:calc(100% - 100px);
+}
+
+div.savedLocations {
+    height: 100%;
+    max-height: calc(100% - 140px);
+}
+
+div.prediction {
+    width: calc(100% - 46px);
+}
+
+div.mode img {
+
 }

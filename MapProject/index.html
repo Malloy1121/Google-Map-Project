@@ -23,7 +23,8 @@
             <button class="glyphicon glyphicon-menu-hamburger" data-bind="click:openMenu"></button>
         </div>
         <div class="input-address-container">
-            <input type="text" id="input" placeholder="Search Google Maps" data-bind="value:location.destination,click:openInputList">
+            <input type="text" id="input" placeholder="Search Google Maps"
+                   data-bind="value:location.destination,click:openInputList">
             <span class="glyphicon glyphicon-search" id="search"></span>
         </div>
 
@@ -38,7 +39,10 @@
 
     <div class="list-predictions-container display_none" data-bind="css:{display_none:isInputListClose}">
         <ul class="list-predictions" data-bind="foreach:predictions">
-            <li data-bind="click:$root.setMarkers"><div><img class="icon_prediction" data-bind="attr:{src:$root.icon_image($data)}"></div><div class="prediction" data-bind="text:description"></div></li>
+            <li data-bind="click:$root.setMarkers">
+                <div><img class="icon_prediction" data-bind="attr:{src:$root.icon_image($data)}"></div>
+                <div class="prediction" data-bind="text:description"></div>
+            </li>
         </ul>
     </div>
 
@@ -46,33 +50,43 @@
 <div class="information display_none" data-bind="css:{'navHidden':!isNavHidden(),'display_none':isNavBackHidden}">
     <div class="blue_back"></div>
     <div class="info_back">
-    <div id="nav_back">
-        <div id="info_win">
-        </div>
+        <div id="nav_back">
+            <div id="info_win">
+            </div>
 
-    </div>
+        </div>
         <div class="button-group" data-bind="css:{'display_none':isBtnGroupHidden}">
             <table class="button-group-table">
                 <tr>
-                    <td><button class="btn-glyph-lg btn-glyph" data-bind="click:setStartingMarker">
-                        <div><img src="images/location-pin.svg" alt="starting"></div>
-                        <div class="button-group-label">Depart from here</div>
-                    </button></td>
-                    <td><button class="btn-glyph-lg btn-glyph" data-bind="click:setDestMarker">
-                        <div><img src="images/navigation.svg" alt="destination"></div>
-                        <div class="button-group-label">Go to here</div>
-                    </button></td>
-                    <td><button class="btn-glyph-lg btn-glyph" data-bind="click:save">
-                        <div><img src="images/star.svg" alt="save"></div>
-                        <div class="button-group-label">Save</div>
-                    </button></td>
+                    <td>
+                        <button class="btn-glyph-lg btn-glyph" data-bind="click:setStartingMarker">
+                            <div><img src="images/location-pin.svg" alt="starting"></div>
+                            <div class="button-group-label">Depart from here</div>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn-glyph-lg btn-glyph" data-bind="click:setDestMarker">
+                            <div><img src="images/navigation.svg" alt="destination"></div>
+                            <div class="button-group-label">Go to here</div>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn-glyph-lg btn-glyph" data-bind="click:save">
+                            <div><img src="images/star.svg" alt="save"></div>
+                            <div class="button-group-label">Save</div>
+                        </button>
+                    </td>
                 </tr>
             </table>
         </div>
-    <div id="nav_close">
-        <button id="nav_close_btn" class="btn-glyph" data-bind="click:hideNav"><img data-bind="attr:{src:currentNavSlide}" alt="slide"></button>
-    </div>
-        <div id="nav_close_sm"><button class="btn-glyph" data-bind="click:toggleSideBar"><img src="images/down-arrow.svg" alt="close"></button></div>
+        <div id="nav_close">
+            <button id="nav_close_btn" class="btn-glyph" data-bind="click:hideNav"><img
+                    data-bind="attr:{src:currentNavSlide}" alt="slide"></button>
+        </div>
+        <div id="nav_close_sm">
+            <button class="btn-glyph" data-bind="click:toggleSideBar"><img src="images/down-arrow.svg" alt="close">
+            </button>
+        </div>
     </div>
 
 </div>
@@ -80,39 +94,53 @@
 <div id="map" data-bind="click:closeSideBar">
 </div>
 
-<div class="side-bar sideBar_close" data-bind="css:{'sideBar_open':isSideBarOpen(),'sideBar_close':!isSideBarOpen(),'sideBar_hidden':isSideBarHidden()}">
+<div class="side-bar sideBar_close"
+     data-bind="css:{'sideBar_open':isSideBarOpen(),'sideBar_close':!isSideBarOpen(),'sideBar_hidden':isSideBarHidden()}">
     <div id="side-bar-slide">
-        <button id="btn-glyph" class="btn-glyph" data-bind="click:hideSideBar"><img data-bind="attr:{src:currentSlide}" alt="slide"></button>
+        <button id="btn-glyph" class="btn-glyph" data-bind="click:hideSideBar"><img data-bind="attr:{src:currentSlide}"
+                                                                                    alt="slide"></button>
     </div>
-<div class="mode-bar" >
-    <!-- ko foreach:modes -->
-    <div class="mode" data-bind="css:{selectedMode:isSelected},click:$root.selectMode">
-        <button class="btn-glyph"><img data-bind="attr:{src:image,alt:mode}"></button>
-    </div>
-    <!-- /ko -->
+    <div class="mode-bar">
+        <!-- ko foreach:modes -->
+        <div class="mode" data-bind="css:{selectedMode:isSelected},click:$root.selectMode">
+            <button class="btn-glyph"><img data-bind="attr:{src:image,alt:mode}"></button>
+        </div>
+        <!-- /ko -->
 
-    <div class="mode" >
-        <button class="btn-glyph" data-bind="click:$root.toggleSideBar"><img src="images/close-button.svg" alt="close" style="width: 25px;"></button>
+        <div class="mode">
+            <button class="btn-glyph" data-bind="click:$root.toggleSideBar"><img src="images/close-button.svg"
+                                                                                 alt="close" style="width: 25px;">
+            </button>
+        </div>
     </div>
-</div>
     <div class="input-route-container">
         <div class="input-route">
-        <div id="input-starting"><input type="text" id="starting" placeholder="Choose starting point..." data-bind="value:location.starting"></div>
-        <div id="input-dest" ><input type="text"  id="dest" placeholder="Choose destination..." data-bind="value:location.destination"></div>
+            <div id="input-starting"><input type="text" id="starting" placeholder="Choose starting point..."
+                                            data-bind="value:location.starting"></div>
+            <div id="input-dest"><input type="text" id="dest" placeholder="Choose destination..."
+                                        data-bind="value:location.destination"></div>
         </div>
         <div class="input-route-buttons">
-        <div class="input-route-reverse">
-            <button class="btn-glyph" data-bind="click:reverseLocation"><img src="images/up-and-down-opposite-double-arrows-side-by-side.svg" alt="reverse"></button>
-        </div>
-        <div class="input-route-go">
-            <button class="btn-glyph" data-bind="click:showDirection,attr:{'disable':!(isDestReady()&&isStartingReady())}"><img src="images/turn-right-sign.svg" alt="navigate"></button>
-        </div>
+            <div class="input-route-reverse">
+                <button class="btn-glyph" data-bind="click:reverseLocation"><img
+                        src="images/up-and-down-opposite-double-arrows-side-by-side.svg" alt="reverse"></button>
+            </div>
+            <div class="input-route-go">
+                <button class="btn-glyph"
+                        data-bind="click:showDirection,attr:{'disable':!(isDestReady()&&isStartingReady())}"><img
+                        src="images/turn-right-sign.svg" alt="navigate"></button>
+            </div>
         </div>
     </div>
     <div id="result">
-        <div class="list-predictions-container display_none" data-bind="css:{display_none:predictions===undefined}">
+        <div class="list-predictions-container display_none" data-bind="css:{display_none:predictions()==null||!isShowPredictions()}">
             <ul class="list-predictions" data-bind="foreach:predictions">
-                <li data-bind="click:$root.setSingleMarker"><button class="btn-result"><div><img class="icon_prediction" data-bind="attr:{src:$root.icon_image($data)}"></div><div class="prediction" data-bind="text:description"></div></button></li>
+                <li data-bind="click:$root.setSingleMarker">
+                    <button class="btn-result">
+                        <div><img class="icon_prediction" data-bind="attr:{src:$root.icon_image($data)}"></div>
+                        <div class="prediction" data-bind="text:description"></div>
+                    </button>
+                </li>
             </ul>
         </div>
     </div>
@@ -128,7 +156,7 @@
         <hr>
         <div class="options-container">
             <h4>Display preference</h4>
-            <ul class="preference-list" >
+            <ul class="preference-list">
                 <li data-bind="click:toggleShowTraffic,css:{'preference_able':isShowTraffic()}">
                     <button class="btn-pre">
                         <div>
@@ -241,15 +269,37 @@
             </ul>
         </div>
 
-        <div class="savedLoactions" data-bind="css:{'display_none':savedLocations().length==0}">
+        <div class="locations-container" data-bind="css:{'display_none':savedLocations().length==0}" style="height: calc(100% - 200px)">
             <hr>
             <h4>My locations</h4>
-            <ul class="list-predictions" data-bind="foreach:savedLocations">
-                <li><button class="btn-pre btn-savedlocation"  data-bind="text:title,click:$root.myLocationClick"></button></li>
+        <div class="savedLocations">
+
+            <ul class="list-predictions list-savedLocations" data-bind="foreach:savedLocations">
+                <li>
+                    <button class="btn-pre btn-savedlocation"
+                            data-bind="text:title,click:$root.myLocationClick"></button>
+                </li>
             </ul>
+
+            <!--<ul  class="list-predictions list-savedLocations">-->
+                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
+                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
+                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
+                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
+                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
+                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
+                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
+                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
+                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
+                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
+                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
+            <!--</ul>-->
+        </div>
         </div>
         <div class="btn-menuClose">
-            <button class="btn-glyph" data-bind="click:closeMenu"><img src="images/double-left-chevron.svg" alt="close menu" style="height: 30px;width: 30px;"></button>
+            <button class="btn-glyph" data-bind="click:closeMenu"><img src="images/double-left-chevron.svg"
+                                                                       alt="close menu"
+                                                                       style="height: 30px;width: 30px;"></button>
         </div>
     </div>
     <div class="menu-background" data-bind="css:{'menu_background_open':isMenuOpen()},click:closeMenu">
@@ -259,10 +309,11 @@
 <script src="js/controller.js"></script>
 <script src="js/map.js"></script>
 <!--<script  async defer-->
-         <!--src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCadwJpNLlZz4ylftxHZFubT5sWWYopuPU&callback=initMap">-->
+<!--src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCadwJpNLlZz4ylftxHZFubT5sWWYopuPU&callback=initMap">-->
 <!--</script>-->
-<!--<script async defer-->
-        <!--src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCEaRCrbjyEdpBjVSpzVN5Gy0qTF34WC8s&callback=initMap">-->
-<!--</script>-->
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyBrYyn5gtgO2Qjf0h4lbXeIkELPfRlSx1w&callback=initMap">
+</script>
 </body>
 </html>

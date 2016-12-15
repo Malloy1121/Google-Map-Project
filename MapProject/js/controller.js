@@ -43,6 +43,7 @@ function VM() {
     this.isBtnGroupHidden=ko.observable(true);
     this.isStartingReady=ko.observable(false);
     this.isDestReady=ko.observable(false);
+    this.isShowPredictions=ko.observable(true);
     this.isShowTraffic=ko.observable(false);
     this.isAvoidTolls=ko.observable(false);
     this.slide=new SlideButton(false);
@@ -335,27 +336,48 @@ function VM() {
     };
 
     this.showDirection=function () {
+        hideMarkers(markers);
+        if(self.isDestReady()&&self.isStartingReady()) {
+            displayDirections();
+            return;
+        }
         // console.log(self.startingMarker()," ",self.destMarker());
-        if(!self.isNavBackHidden()){
-            self.isNavBackHidden(true);
+        // if(!self.isNavBackHidden()){
+        //     self.isNavBackHidden(true);
+        // }
+
+        if(!self.isStartingReady()&&self.location.starting()!=null&&self.location.starting().length>0){
+            self.toStarting(true);
+            getSinglePlace(self.location.starting());
+            self.predictions(null);
         }
 
-        if(self.isDestReady()&&self.isStartingReady())
-            displayDirections();
+//self.isStartingReady()&&
+        if(self.isStartingReady()&&!self.isDestReady()&&self.location.destination()!=null&&self.location.destination().length>0){
+            self.toStarting(false);
+            getSinglePlace(self.location.destination());
+            self.predictions(null);
+
+        }
+
+
+
     };
 
     this.myLocationClick=function () {
         hideMarkers(placeMarkers);
         placeMarkers=[];
         self.toStarting(false);
+        self.location.destination(this.formattedAddress)
         getSinglePlace(this.formattedAddress);
-        if (!self.isSideBarOpen())
+        // if (!self.isSideBarOpen())
             self.isNavBackHidden(false);
         self.searchBtn.flag = false;
         self.searchBtnIcon(self.searchBtn.image());
         self.isBtnGroupHidden(false);
         self.isMenuOpen(false);
-    }
+    };
+
 
 }
 var vm=new VM();
