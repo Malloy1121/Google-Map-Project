@@ -13,8 +13,7 @@
     <link rel="stylesheet" href="css/style-sm.css" media="screen and (max-width:500px)">
     <link rel="stylesheet" href="css/map.css">
     <script src="bower_components/knockout/dist/knockout.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="js/yelp.js"></script>
+    <script src="js/jquery-3.1.1.min.js"></script>
 </head>
 <body>
 
@@ -46,7 +45,6 @@
             </li>
         </ul>
     </div>
-
 </div>
 <div class="information display_none" data-bind="css:{'navHidden':!isNavHidden(),'display_none':isNavBackHidden}">
     <div class="blue_back"></div>
@@ -309,12 +307,13 @@
 
 <script src="js/controller.js"></script>
 <script src="js/map.js"></script>
+<script src="js/foursquare.js"></script>
 <!--<script  async defer-->
 <!--src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCadwJpNLlZz4ylftxHZFubT5sWWYopuPU&callback=initMap">-->
 <!--</script>-->
 
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyBrYyn5gtgO2Qjf0h4lbXeIkELPfRlSx1w&callback=initMap">
-</script>
+<!--<script async defer-->
+<!--src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyBrYyn5gtgO2Qjf0h4lbXeIkELPfRlSx1w&callback=initMap">-->
+<!--</script>-->
 </body>
 </html>
