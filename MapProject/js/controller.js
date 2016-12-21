@@ -25,7 +25,18 @@ var SearchButton=function (flag) {
     this.image=function () {
         return this.flag?this.search:this.close;
     }
-}
+};
+
+var Food=function () {
+    this.name="";
+    this.category="";
+    this.photo="images/coming-soon.svg";
+    this.rating="0";
+    this.hours="";
+    this.address="";
+    this.price="";
+    this.ratingColor="grey";
+};
 
 function VM() {
     var self=this;
@@ -34,6 +45,7 @@ function VM() {
     this.startingMarker=ko.observable();
     this.destMarker=ko.observable();
     this.location=new Location();
+    this.nearby=ko.observableArray();
     this.isSideBarOpen=ko.observable(false);
     this.isSideBarHidden=ko.observable(false);
     this.isInputListClose=ko.observable(true);
@@ -63,6 +75,8 @@ function VM() {
         new Mode("TRANSIT","images/underground.svg")];
     this.modes[0].isSelected(true);
     this.currentMode=ko.observable(this.modes[0]);
+
+
     this.selectMode=function () {
         self.modes.forEach(function (e) {
             e.isSelected(false);
@@ -92,20 +106,6 @@ function VM() {
     };
 
     this.toggleSideBar=function () {
-        // if(this.isSideBarOpen()){
-        //     if(self.startingMarker()) {
-        //         console.log(self.startingMarker());
-        //         self.startingMarker().setMap(null);
-        //         self.startingMarker(null);
-        //     }
-        //     if(self.destMarker()) {
-        //         console.log(self.destMarker());
-        //         self.destMarker().setMap(null);
-        //         self.destMarker(null);
-        //     }
-        // }
-
-
         if(!this.isNavBackHidden()){
             this.isNavBackHidden(true);
             this.searchBtn.flag=true;
@@ -341,10 +341,6 @@ function VM() {
             displayDirections();
             return;
         }
-        // console.log(self.startingMarker()," ",self.destMarker());
-        // if(!self.isNavBackHidden()){
-        //     self.isNavBackHidden(true);
-        // }
 
         if(!self.isStartingReady()&&self.location.starting()!=null&&self.location.starting().length>0){
             self.toStarting(true);
@@ -352,7 +348,6 @@ function VM() {
             self.predictions(null);
         }
 
-//self.isStartingReady()&&
         if(self.isStartingReady()&&!self.isDestReady()&&self.location.destination()!=null&&self.location.destination().length>0){
             self.toStarting(false);
             getSinglePlace(self.location.destination());

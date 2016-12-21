@@ -315,6 +315,9 @@ function createPlacesMarkers(places,flag) {
                 vm.searchBtnIcon(vm.searchBtn.image());
                 addInfoWin(this, map);
                 vm.isBtnGroupHidden(false);
+                // console.log(this.position.lat()+","+this.position.lng());
+                vm.nearby([]);
+                $.explore(this.position.lat()+","+this.position.lng());
                 // console.log(this);
             });
             if (each.geometry.viewport) {
@@ -325,6 +328,8 @@ function createPlacesMarkers(places,flag) {
         });
         addInfoWin(placeMarkers[0], map);
         vm.destMarker(placeMarkers[0]);
+        vm.nearby([]);
+        $.explore(vm.destMarker().position.lat()+","+vm.destMarker().position.lng());
         vm.isDestReady(true);
         map.fitBounds(bounds);
     }

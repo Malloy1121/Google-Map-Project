@@ -20,14 +20,16 @@ $(document).ready(function () {
         var date = new Date();
         var version = date.getFullYear().toString() + (date.getMonth() + 1).toString() + date.getDate().toString();
         // console.log(date.getFullYear(),date.getMonth()+1,date.getDate(),version);
+        param.ll=ll;
         param.v = version;
+        console.log(param);
         $.ajax({
             url: "https://api.foursquare.com/v2/venues/explore",
             dataType: "jsonp",
             type: "get",
             data: param,
             success: function (data) {
-                console.log(data.response.groups[0].items);
+                // console.log(data.response.groups[0].items);
                 var items = data.response.groups[0].items;
                 items.forEach(function (each) {
                     var id = each.venue.id;
@@ -53,8 +55,9 @@ $(document).ready(function () {
                     return;
                 var item = data.response.photos.items[0];
                 // console.log(data);
-                venue.photo = item.prefix + "300x300" + item.suffix;
-                // console.log(data.response.groups[0].items);
+                venue.photo = item.prefix + "390x200" + item.suffix;
+                createItem(venue);
+                // console.log(venue);
             },
             error: function (data) {
                 console.log(data);
@@ -62,6 +65,27 @@ $(document).ready(function () {
         });
     };
 
-    $.explore("");
+    function createItem(item){
+        var food=new Food();
+        var venue=item.venue;
+        food.photo=item.photo;
+        food.name=venue.name;
+        food.category=venue.categories[0].shortName;
+        if(food.rating) {
+            food.rating = venue.rating;
+            food.ratingColor="#"+venue.ratingColor;
+        }
+        if(venue.hours)
+        food.hours=venue.hours.status;
+        food.address=venue.location.address+", "+venue.location.city;
+        var price="";
+        for(var i=0;i<venue.price.tier;i++) {
+            price += "$";
+        }
+        food.price=price;
+        vm.nearby.push(food);
+    }
+
+    // $.explore("");
 
 });
