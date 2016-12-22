@@ -6,10 +6,10 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    min-width: 270px;
+    min-width: 300px;
 }
 
-div#routes {
+#routes {
     overflow-y: auto;
     height: 100%;
     max-height: calc(100% - 150px);
@@ -27,7 +27,7 @@ td.adp-substep{
 
 @media screen and (min-width: 501px) {
     html, body  {
-        min-width:1000px;
+        min-width:500px;
         min-height: 500px;
     }
     /*div.information,div.side-bar {*/

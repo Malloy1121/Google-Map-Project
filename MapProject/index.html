@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/sideBar.css">
     <link rel="stylesheet" href="css/menu.css">
-    <link rel="stylesheet" href="css/style-sm.css" media="screen and (max-width:500px)">
     <link rel="stylesheet" href="css/map.css">
     <link rel="stylesheet" href="css/nearby.css">
+    <link rel="stylesheet" href="css/style-sm.css" media="screen and (max-width:750px)">
     <script src="bower_components/knockout/dist/knockout.js"></script>
     <script src="js/jquery-3.1.1.min.js"></script>
 </head>
@@ -84,7 +84,7 @@
                     data-bind="attr:{src:currentNavSlide}" alt="slide"></button>
         </div>
         <div id="nav_close_sm">
-            <button class="btn-glyph" data-bind="click:toggleSideBar"><img src="images/down-arrow.svg" alt="close">
+            <button class="btn-glyph" data-bind="click:toggleSideBar">Close
             </button>
         </div>
         <div class="nearby">
@@ -96,7 +96,7 @@
 
                 </div>
                 <div class="food-rating">
-                    <div data-bind="text:rating,style:{backgroundColor:ratingColor}" class="rating"></div>
+                    <div data-bind="text:rating,style:{'backgroundColor':ratingColor}" class="rating"></div>
                     <div data-bind="text:price"></div>
                     <div class="food-hours" data-bind="text:hours" style="float: right"></div>
                 </div>
@@ -153,7 +153,8 @@
         </div>
     </div>
     <div id="result">
-        <div class="list-predictions-container display_none" data-bind="css:{display_none:predictions()==null||!isShowPredictions()}">
+        <div class="list-predictions-container display_none"
+             data-bind="css:{display_none:predictions()==null||!isShowPredictions()}">
             <ul class="list-predictions" data-bind="foreach:predictions">
                 <li data-bind="click:$root.setSingleMarker">
                     <button class="btn-result">
@@ -164,7 +165,12 @@
             </ul>
         </div>
     </div>
-    <div id="routes">
+    <div class="routes-toggle" data-bind="css:{'routes-toggle-hidden':!isRouteOpen(),'display_none':!isDestReady()||!isStartingReady()}">
+        <button class="btn-glyph"  data-bind="click:toggleRoute">
+            <img src="images/up-and-down-opposite-arrows-symbol-side-by-side.svg" alt="toggle" style="height: 35px;width:35px;font-size: 1.2em">
+        </button>
+    </div>
+    <div id="routes" data-bind="css:{'routes-open':isRouteOpen()}">
     </div>
 </div>
 
@@ -289,32 +295,20 @@
             </ul>
         </div>
 
-        <div class="locations-container" data-bind="css:{'display_none':savedLocations().length==0}" style="height: calc(100% - 200px)">
+        <div class="locations-container" data-bind="css:{'display_none':savedLocations().length==0}"
+             style="height: calc(100% - 200px)">
             <hr>
             <h4>My locations</h4>
-        <div class="savedLocations">
+            <div class="savedLocations">
 
-            <ul class="list-predictions list-savedLocations" data-bind="foreach:savedLocations">
-                <li>
-                    <button class="btn-pre btn-savedlocation"
-                            data-bind="text:title,click:$root.myLocationClick"></button>
-                </li>
-            </ul>
+                <ul class="list-predictions list-savedLocations" data-bind="foreach:savedLocations">
+                    <li>
+                        <button class="btn-pre btn-savedlocation"
+                                data-bind="text:title,click:$root.myLocationClick"></button>
+                    </li>
+                </ul>
 
-            <!--<ul  class="list-predictions list-savedLocations">-->
-                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
-                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
-                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
-                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
-                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
-                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
-                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
-                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
-                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
-                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
-                <!--<li><button class="btn-pre btn-savedlocation"  data-bind="">1</button></li>-->
-            <!--</ul>-->
-        </div>
+            </div>
         </div>
         <div class="btn-menuClose">
             <button class="btn-glyph" data-bind="click:closeMenu"><img src="images/double-left-chevron.svg"
@@ -329,12 +323,12 @@
 <script src="js/controller.js"></script>
 <script src="js/map.js"></script>
 <script src="js/foursquare.js"></script>
-<script  async defer
-src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCadwJpNLlZz4ylftxHZFubT5sWWYopuPU&callback=initMap">
-</script>
-
-<!--<script async defer-->
-<!--src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyBrYyn5gtgO2Qjf0h4lbXeIkELPfRlSx1w&callback=initMap">-->
+<!--<script  async defer-->
+<!--src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCadwJpNLlZz4ylftxHZFubT5sWWYopuPU&callback=initMap">-->
 <!--</script>-->
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyBrYyn5gtgO2Qjf0h4lbXeIkELPfRlSx1w&callback=initMap">
+</script>
 </body>
 </html>

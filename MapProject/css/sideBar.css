@@ -20,7 +20,7 @@ div.sideBar_open {
 }
 
 div.sideBar_close {
-    transform: translateX(-500px);
+    transform: translateX(-120%);
 }
 
 div.sideBar_hidden {
@@ -218,6 +218,8 @@ div#result {
     width: 380px;
 }
 
-
+div.routes-toggle {
+    display: none;
+}
 
 

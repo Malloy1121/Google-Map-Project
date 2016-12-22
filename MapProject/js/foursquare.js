@@ -1,28 +1,27 @@
 $(document).ready(function () {
     var param = {
-        radius: 1000 * 1.61,
-        categoryId: "4d4b7105d754a06374d81259",
+        radius: 1000 * 1.61,                //Search for targets within 1 mile
+        categoryId: "4d4b7105d754a06374d81259",             //Only look for food
         client_id: "55QPL3HEO4XFTMP1MVZ5A3HGFRFNRIVUCOEGIX12WTQNL5IZ",
         client_secret: "THU4ZK5SXWQCSLPPJUHJK5RAXH5S4F5E1JGSHVC0YMQABUJC",
         ll: "40.7,-74",
         limit: 20
-        // v:version
     };
 
     var param_photo = {
         client_id: "55QPL3HEO4XFTMP1MVZ5A3HGFRFNRIVUCOEGIX12WTQNL5IZ",
         client_secret: "THU4ZK5SXWQCSLPPJUHJK5RAXH5S4F5E1JGSHVC0YMQABUJC",
         limit: 1
-        // v:"version"
     };
 
+    //Find nearby restaurants according to lat and lng
     $.explore = function (ll) {
         var date = new Date();
         var version = date.getFullYear().toString() + (date.getMonth() + 1).toString() + date.getDate().toString();
         // console.log(date.getFullYear(),date.getMonth()+1,date.getDate(),version);
         param.ll=ll;
         param.v = version;
-        console.log(param);
+        // console.log(param);
         $.ajax({
             url: "https://api.foursquare.com/v2/venues/explore",
             dataType: "jsonp",
@@ -42,8 +41,8 @@ $(document).ready(function () {
         });
     };
 
+    //Get a profile photo according to venue
     var getPhoto = function (venue, id, version) {
-        var date = new Date();
         param_photo.v = version;
         $.ajax({
             url: "https://api.foursquare.com/v2/venues/" + id + "/photos",
@@ -65,13 +64,14 @@ $(document).ready(function () {
         });
     };
 
+    //Encapsulate results to JS objects
     function createItem(item){
         var food=new Food();
         var venue=item.venue;
         food.photo=item.photo;
         food.name=venue.name;
         food.category=venue.categories[0].shortName;
-        if(food.rating) {
+        if(venue.rating) {
             food.rating = venue.rating;
             food.ratingColor="#"+venue.ratingColor;
         }
@@ -79,10 +79,12 @@ $(document).ready(function () {
         food.hours=venue.hours.status;
         food.address=venue.location.address+", "+venue.location.city;
         var price="";
-        for(var i=0;i<venue.price.tier;i++) {
-            price += "$";
+        if(venue.price) {
+            for (var i = 0; i < venue.price.tier; i++) {
+                price += "$";
+            }
+            food.price=price;
         }
-        food.price=price;
         vm.nearby.push(food);
     }
 

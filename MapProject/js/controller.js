@@ -35,7 +35,7 @@ var Food=function () {
     this.hours="";
     this.address="";
     this.price="";
-    this.ratingColor="grey";
+    this.ratingColor="#808080";
 };
 
 function VM() {
@@ -45,7 +45,7 @@ function VM() {
     this.startingMarker=ko.observable();
     this.destMarker=ko.observable();
     this.location=new Location();
-    this.nearby=ko.observableArray();
+    this.nearby=ko.observableArray();                       //Store nearby restaurant list
     this.isSideBarOpen=ko.observable(false);
     this.isSideBarHidden=ko.observable(false);
     this.isInputListClose=ko.observable(true);
@@ -58,6 +58,7 @@ function VM() {
     this.isShowPredictions=ko.observable(true);
     this.isShowTraffic=ko.observable(false);
     this.isAvoidTolls=ko.observable(false);
+    this.isRouteOpen=ko.observable(false);
     this.slide=new SlideButton(false);
     this.searchBtn=new SearchButton(true);
     this.searchBtnIcon=ko.observable(this.searchBtn.image());
@@ -68,7 +69,7 @@ function VM() {
     this.pred_dest=ko.observable();
     this.toStarting=ko.observable(false);
     this.currentSlide=ko.observable(this.slide.image());
-    this.currentNavSlide=ko.observable(this.navSlide.image())
+    this.currentNavSlide=ko.observable(this.navSlide.image());
     this.modes=[new Mode("DRIVING","images/sports-car.svg"),
         new Mode("WALKING","images/pedestrian-walking.svg"),
         new Mode("BICYCLING","images/bicycle.svg"),
@@ -76,7 +77,7 @@ function VM() {
     this.modes[0].isSelected(true);
     this.currentMode=ko.observable(this.modes[0]);
 
-
+    //Each function does the exactly same job as its function name
     this.selectMode=function () {
         self.modes.forEach(function (e) {
             e.isSelected(false);
@@ -99,7 +100,7 @@ function VM() {
 
     this.openMenu=function () {
         this.isMenuOpen(true);
-        console.log(this.isMenuOpen());
+        // console.log(this.isMenuOpen());
     };
     this.closeMenu=function () {
         this.isMenuOpen(false);
@@ -169,7 +170,7 @@ function VM() {
             this.searchBtnIcon(this.searchBtn.image());
         }
 
-            this.location.starting(this.currentMarker())
+            this.location.starting(this.currentMarker());
             this.isSideBarOpen(!this.isSideBarOpen());
             this.isSideBarClose(!this.isSideBarClose());
     };
@@ -204,7 +205,7 @@ function VM() {
         return self.location.destination;
     };
 
-    this.reverseLocation=function () {
+    this.reverseLocation=function () {                              //reserve destination and starting spot
         var starting=self.location.starting();
         var dest=self.location.destination();
         self.location.destination(starting);
@@ -228,7 +229,7 @@ function VM() {
         this.pred_dest(array);
     };
 
-    this.icon_image=function (icon) {
+    this.icon_image=function (icon) {                                   //Toggle search bar icon
         if(icon.place_id)
             return 'images/location-pointer.svg';
         else
@@ -244,14 +245,15 @@ function VM() {
         self.predictions(null);
     };
 
-    this.save=function () {
+    this.save=function () {                                                             //Save favorite locations
         var flag=true;
-        this.savedLocations().forEach(function (each) {
+        for(var i=0;i<this.savedLocations().length;i++){
+            var each=this.savedLocations()[i];
             if(each.formattedAddress==self.currentMarker().formattedAddress){
                 flag=false;
-                return;
+                break;
             }
-        });
+        }
         if(flag) {
             this.savedLocations.push(this.currentMarker());
             console.log(this.savedLocations());
@@ -359,11 +361,11 @@ function VM() {
 
     };
 
-    this.myLocationClick=function () {
+    this.myLocationClick=function () {                                 //Show detail of a favorite location
         hideMarkers(placeMarkers);
         placeMarkers=[];
         self.toStarting(false);
-        self.location.destination(this.formattedAddress)
+        self.location.destination(this.formattedAddress);
         getSinglePlace(this.formattedAddress);
         // if (!self.isSideBarOpen())
             self.isNavBackHidden(false);
@@ -371,6 +373,10 @@ function VM() {
         self.searchBtnIcon(self.searchBtn.image());
         self.isBtnGroupHidden(false);
         self.isMenuOpen(false);
+    };
+
+    this.toggleRoute=function () {
+        this.isRouteOpen(!this.isRouteOpen());
     };
 
 

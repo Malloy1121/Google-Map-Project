@@ -1,6 +1,6 @@
 var map;
-var markers = [];
-var placeMarkers=[];
+var markers = [];       //Default locations' markers
+var placeMarkers=[];    //Place markers
 var input = document.getElementById("input");
 var dest=document.getElementById("dest");
 var staring=document.getElementById("starting");
@@ -17,6 +17,8 @@ var directionsRenderer;
 var streetViewService;
 var placesService;
 
+
+//Customized style object
 var styles = [
     {
         featureType: "water",
@@ -42,8 +44,9 @@ var styles = [
     }
 ];
 
-
+//Initialize Google Maps
 function initMap() {
+    //Default locations
     var locations = [
         {title: 'Shake Shack at Herald Square', location: {lat: 40.7511815, lng: -73.98820379999999}},
         {title: 'Shake Shack at Grand Central Terminal', location: {lat: 40.75255380000001, lng: -73.97862789999999}},
@@ -52,7 +55,7 @@ function initMap() {
             location: {lat: 40.7152344, lng: -74.01490389999999}
         },
         {title: 'Shake Shack at American Museum of Natural History', location: {lat: 40.7808555, lng: -73.97654}},
-        {title: 'Shake Shack at The Fulton Center', location: {lat: 40.7104473, lng: -74.00891709999999}},
+        {title: 'Shake Shack at The Fulton Center', location: {lat: 40.7104473, lng: -74.00891709999999}}
     ];
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 40.7413549, lng: -73.9980244},
@@ -62,7 +65,7 @@ function initMap() {
     });
 
 
-
+    //Initialize map services when ready
     infoWin = new google.maps.InfoWindow();
     geocoder=new google.maps.Geocoder();
     service = new google.maps.places.AutocompleteService();
@@ -75,9 +78,8 @@ function initMap() {
     directionsRenderer.setPanel(routes);
     placesService=new google.maps.places.PlacesService(map);
 
-
+    //Create listeners to detect input changes
     input.addEventListener("keyup", function () {
-        // vm.toStarting(false);
         if (this.value!=""&&this.value.length > 0) {
             getPredictions(this.value, this);
         }
@@ -87,7 +89,6 @@ function initMap() {
 
 
     dest.addEventListener("keyup", function () {
-        // vm.toStarting(false);
         vm.isShowPredictions(true);
         vm.isDestReady(false);
         if (this.value.length > 0)
@@ -106,7 +107,6 @@ function initMap() {
     });
 
     staring.addEventListener("keyup", function () {
-        // vm.toStarting(true);
         vm.isStartingReady(false);
         vm.isShowPredictions(true);
         if (this.value.length > 0)
@@ -125,16 +125,17 @@ function initMap() {
             vm.setPredictions(null);
     });
 
-    function makeMarkerIcon(icon) {
-        var markerImage = new google.maps.MarkerImage(
-            icon,
-            new google.maps.Size(32, 32),
-            new google.maps.Point(0, 0),
-            new google.maps.Point(10, 34),
-            new google.maps.Size(32, 32));
-        return markerImage;
-    }
+    // function makeMarkerIcon(icon) {
+    //     var markerImage = new google.maps.MarkerImage(
+    //         icon,
+    //         new google.maps.Size(32, 32),
+    //         new google.maps.Point(0, 0),
+    //         new google.maps.Point(10, 34),
+    //         new google.maps.Size(32, 32));
+    //     return markerImage;
+    // }
 
+    //Display default locations' markers on map
     function showMarkers() {
         locations.forEach(function (location) {
             var latlng=new google.maps.LatLng(location.location.lat,location.location.lng);
@@ -168,6 +169,8 @@ function initMap() {
 
 
             markers.push(marker);
+
+            //Show detail of place after it is clicked
             marker.addListener("click", function () {
                 vm.currentMarker(this);
                 map.panTo(this.position);
@@ -214,6 +217,7 @@ function hideMarkers(array) {
     })
 }
 
+//Search for predictions according to input
 function getPredictions(input, target) {
     service.getQueryPredictions({input: input}, getAutoPlaces);
 
@@ -232,8 +236,9 @@ function getPredictions(input, target) {
     }
 }
 
+
+//Create information window
 function addInfoWin(marker, map) {
-    // var streetViewService = new google.maps.StreetViewService();
     info_win.innerHTML=info_win_HTML;
     var streetView=document.getElementById("street_view");
     if (infoWin.marker == marker) {
@@ -250,7 +255,7 @@ function addInfoWin(marker, map) {
                     heading: heading,
                     pitch: 30
                 }
-            }
+            };
             document.getElementById("info_title").innerText=marker.title;
             var panorama = new google.maps.StreetViewPanorama(streetView, panoramaOptions);
         }
@@ -263,9 +268,8 @@ function addInfoWin(marker, map) {
     streetViewService.getPanoramaByLocation(marker.position, 100, getStreetView);
 }
 
-
+//Search for places according to input
 function getPlaces() {
-    // var placesService=new google.maps.places.PlacesService(map);
     placesService.textSearch({
         query:input.value,
         bounds:map.getBounds()
@@ -279,7 +283,6 @@ function getPlaces() {
 }
 
 function getSinglePlace(place) {
-    // var placesService=new google.maps.places.PlacesService(map);
     // console.log(place);
 
     placesService.textSearch({
@@ -293,10 +296,11 @@ function getSinglePlace(place) {
     });
 }
 
+//Create markers for place results sent back from api
 function createPlacesMarkers(places,flag) {
     // console.log(places);
     var bounds=new google.maps.LatLngBounds();
-    if(flag) {
+    if(flag) {                                                   //May create multiple markers
         places.forEach(function (each) {
             var marker = new google.maps.Marker({
                 map: map,
@@ -329,12 +333,12 @@ function createPlacesMarkers(places,flag) {
         addInfoWin(placeMarkers[0], map);
         vm.destMarker(placeMarkers[0]);
         vm.nearby([]);
-        $.explore(vm.destMarker().position.lat()+","+vm.destMarker().position.lng());
-        vm.isDestReady(true);
+        $.explore(vm.destMarker().position.lat()+","+vm.destMarker().position.lng());               //Send a request to foursquare to get
+        vm.isDestReady(true);                                                                          //nearby restaurant list
         map.fitBounds(bounds);
     }
 
-    else{
+    else{                                                           //Create only one marker
         var place=places[0];
         // console.log(place);
         var marker = new google.maps.Marker({
@@ -386,7 +390,7 @@ function createPlacesMarkers(places,flag) {
         }
 
         if(vm.isDestReady()&&vm.isStartingReady()) {
-            // vm.showDirection();
+
         }
         else {
             marker.setMap(map);
@@ -400,7 +404,7 @@ function createPlacesMarkers(places,flag) {
 }
 
 function getFirstPredictions(input) {
-    console.log(input)
+    // console.log(input);
     service.getQueryPredictions({input: input}, getAutoPlaces);
     function getAutoPlaces(predictions, status) {
         if(predictions==null){
@@ -408,7 +412,7 @@ function getFirstPredictions(input) {
             return;
         }
         if (status == google.maps.places.PlacesServiceStatus.OK) {
-            console.log(predictions)
+            // console.log(predictions);
             vm.firstPrediction(predictions[0].description);
 
         }
@@ -417,7 +421,7 @@ function getFirstPredictions(input) {
         }
     }
 }
-
+//Request direction information between two places
 function displayDirections() {
     vm.location.starting(vm.startingMarker().formattedAddress);
     vm.location.destination(vm.destMarker().formattedAddress);

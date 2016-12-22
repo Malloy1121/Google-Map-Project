@@ -179,6 +179,6 @@ div.button-group {
     width: 40px;
 }
 
-div.nav_close_sm {
+div#nav_close_sm {
     display: none;
 }
