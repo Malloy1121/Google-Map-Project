@@ -3,6 +3,10 @@
     display: none;
 }
 
+div.display_none.routes-toggle {
+    display: none;
+}
+
 button#btn-glyph,
 button#nav_close_btn {
     width: 30px;

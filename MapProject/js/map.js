@@ -118,7 +118,7 @@ function initMap() {
     staring.addEventListener("click", function () {
         vm.toStarting(true);
         vm.isShowPredictions(!vm.isShowPredictions());
-        console.log(vm.isShowPredictions());
+        // console.log(vm.isShowPredictions());
         if (this.value.length > 0)
             getPredictions(this.value, this);
         else
@@ -367,7 +367,7 @@ function createPlacesMarkers(places,flag) {
         // vm.currentMarker(marker);
         if(vm.toStarting()) {
             vm.startingMarker(marker);
-            console.log(vm.startingMarker());
+            // console.log(vm.startingMarker());
             vm.isStartingReady(true);
             vm.location.starting(vm.startingMarker().formattedAddress);
             vm.showDirection();
@@ -375,7 +375,7 @@ function createPlacesMarkers(places,flag) {
         }
         else {
             vm.destMarker(marker);
-            console.log(vm.destMarker());
+            // console.log(vm.destMarker());
             vm.isDestReady(true);
             vm.location.destination(vm.destMarker().formattedAddress);
             vm.showDirection();

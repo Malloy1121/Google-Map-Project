@@ -138,12 +138,12 @@ function VM() {
 
         if(!this.isSideBarOpen()){
             if(self.startingMarker()) {
-                console.log(self.startingMarker());
+                // console.log(self.startingMarker());
                 self.startingMarker().setMap(null);
                 self.startingMarker(null);
             }
             if(self.destMarker()) {
-                console.log(self.destMarker());
+                // console.log(self.destMarker());
                 self.destMarker().setMap(null);
                 self.destMarker(null);
             }
@@ -157,6 +157,7 @@ function VM() {
             this.setPredictions(null);
             this.searchBtn.flag=true;
             this.searchBtnIcon(this.searchBtn.image());
+            this.isRouteOpen(false);
         }
 
 
@@ -256,7 +257,7 @@ function VM() {
         }
         if(flag) {
             this.savedLocations.push(this.currentMarker());
-            console.log(this.savedLocations());
+            // console.log(this.savedLocations());
         }
     };
 
@@ -272,6 +273,7 @@ function VM() {
     };
 
     this.setStartingMarker=function () {
+        if(this.destMarker())
         this.destMarker().setMap(null);
         //this.destMarker(null);
         this.location.destination("");

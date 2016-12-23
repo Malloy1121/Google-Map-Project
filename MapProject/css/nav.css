@@ -95,6 +95,7 @@ div.information {
     /*left:-11px;*/
     z-index: 2;
     transition: transform 0.1s;
+    will-change: transform;
     -webkit-transition: transform 0.1s;
     -moz-transition: transform 0.1s;
     -ms-transition: transform 0.1s;

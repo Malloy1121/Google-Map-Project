@@ -12,6 +12,7 @@ div.side-bar {
     -moz-transition: transform 0.1s;
     -ms-transition: transform 0.1s;
     -o-transition: transform 0.1s;
+    will-change: transform;
     /*left: -450px;*/
 }
 

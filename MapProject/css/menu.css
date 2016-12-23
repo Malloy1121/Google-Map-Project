@@ -10,6 +10,7 @@ div.menu {
     top: 0px;
     left: 0px;
     transform: translateX(-100%);
+    will-change: transform;
     transition: transform 0.2s;
     z-index: 5;
 }
