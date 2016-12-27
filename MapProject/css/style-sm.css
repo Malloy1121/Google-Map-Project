@@ -4,6 +4,7 @@ body {
     height: 100%;
     min-height: 500px;
     overflow-y: hidden;
+    overflow-x: hidden;
 }
 
 #nav {
@@ -181,4 +182,40 @@ div#routes.routes-open {
 
 div.mode {
     width: calc(18% - 10px);
+}
+
+div.right-panel-toggle {
+    left:10px;
+    top:calc(100vh - 55px);
+}
+
+#right-panel-toggle img {
+    width: 45px;
+    height: 45px;
+}
+
+div.right-panel {
+    width: 100vw;
+    transform: translateX(0);
+}
+
+div.right-bar-hidden {
+    transform: translateX(100vw);
+}
+
+#right-panel-close {
+    width: auto;
+    max-width: 18%;
+    /*float: none;*/
+}
+#filter-input {
+    width: calc(100% - 50px);
+}
+
+.display_none_sm {
+    display: none;
+}
+
+div.right-bar ul.list-predictions {
+    width: calc(100vh - 112px);
 }

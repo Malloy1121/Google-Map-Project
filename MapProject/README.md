@@ -11,6 +11,7 @@
   or "Go to here" button on the left panel that appears after you click on a marker.
 * You can save a place as your favourite location by clicking on "Save" button with a blue star icon.
 * If you want to view your favorite places or update your map settings, click on "hamburger" button on the search bar.
+* Some locations with their marker are present by default. You can hide, show or filter them by clicking the "menu" button.
 
 ##Source files
 * index.html: app homepage.
@@ -19,4 +20,6 @@
 * js/map.js: process interactions with Google Maps api.
 
 ##References
-* Some of svg images used in this project come from "www.flaticon.com". Copyright belongs to the author.
+* Some of svg images used in this project are provided by "www.flaticon.com". Copyright belongs to the author.
+* Map services are provided by Google Maps API.
+* Nearby restaurant search service is provided by Foursquare API.

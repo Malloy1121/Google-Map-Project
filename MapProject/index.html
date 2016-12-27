@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="css/menu.css">
     <link rel="stylesheet" href="css/map.css">
     <link rel="stylesheet" href="css/nearby.css">
+    <link rel="stylesheet" href="css/right-bar.css">
     <link rel="stylesheet" href="css/style-sm.css" media="screen and (max-width:750px)">
-    <script src="bower_components/knockout/dist/knockout.js"></script>
-    <script src="js/jquery-3.1.1.min.js"></script>
+
 </head>
 <body>
 
@@ -25,8 +25,8 @@
         </div>
         <div class="input-address-container">
             <input type="text" id="input" placeholder="Search Google Maps"
-                   data-bind="value:location.destination,click:openInputList">
-            <span class="glyphicon glyphicon-search" id="search"></span>
+                   data-bind="value:location.destination,click:openInputList,event:{keyup:inputKeyUp},textInput:location.destination">
+            <span class="glyphicon glyphicon-search" id="search" data-bind="click:searchClick"></span>
         </div>
 
         <div class="seperator"></div>
@@ -52,9 +52,12 @@
     <div class="info_back">
         <div id="nav_back">
             <div id="info_win">
+                <div id="info_title" data-bind="text:infoWinTitle"></div>
+                <div id="street_view"></div>
             </div>
 
         </div>
+        <div class="address" data-bind="text:currentAddress"></div>
         <div class="button-group" data-bind="css:{'display_none':isBtnGroupHidden}">
             <table class="button-group-table">
                 <tr>
@@ -88,11 +91,13 @@
             </button>
         </div>
         <div class="nearby">
+            <h3 style="margin-top: 10px">Restaurants nearby</h3>
             <!-- ko foreach:nearby -->
             <div class="food">
                 <div class="food-name">
-                    <span data-bind="text:name"></span><span> </span>
-                    <span data-bind="text:category" style="float: right"></span><span> </span>
+                    <div data-bind="text:name"></div>
+                    <div data-bind="text:category" style="float: right"></div>
+                    <span> </span>
 
                 </div>
                 <div class="food-rating">
@@ -135,10 +140,14 @@
     </div>
     <div class="input-route-container">
         <div class="input-route">
-            <div id="input-starting"><input type="text" id="starting" placeholder="Choose starting point..."
-                                            data-bind="value:location.starting"></div>
-            <div id="input-dest"><input type="text" id="dest" placeholder="Choose destination..."
-                                        data-bind="value:location.destination"></div>
+            <div id="input-starting">
+                <input type="text" id="starting" placeholder="Choose starting point..."
+                       data-bind="value:location.starting,click:startingClick,event:{keyup:startingKeyUp},textInput:location.starting">
+            </div>
+            <div id="input-dest">
+                <input type="text" id="dest" placeholder="Choose destination..."
+                       data-bind="value:location.destination,click:destClick,event:{keyup:destKeyUp},textInput:location.destination">
+            </div>
         </div>
         <div class="input-route-buttons">
             <div class="input-route-reverse">
@@ -165,9 +174,12 @@
             </ul>
         </div>
     </div>
-    <div class="routes-toggle" data-bind="css:{'routes-toggle-hidden':!isRouteOpen(),'display_none':!isDestReady()||!isStartingReady()}" style="padding-left: 0">
-        <button class="btn-glyph"  data-bind="click:toggleRoute">
-            <img src="images/up-and-down-opposite-arrows-symbol-side-by-side.svg" alt="toggle" style="height: 35px;width:35px;font-size: 1.2em">
+    <div class="routes-toggle"
+         data-bind="css:{'routes-toggle-hidden':!isRouteOpen(),'display_none':!isDestReady()||!isStartingReady()}"
+         style="padding-left: 0">
+        <button class="btn-glyph" data-bind="click:toggleRoute">
+            <img src="images/up-and-down-opposite-arrows-symbol-side-by-side.svg" alt="toggle"
+                 style="height: 35px;width:35px;font-size: 1.2em">
         </button>
     </div>
     <div id="routes" data-bind="css:{'routes-open':isRouteOpen()}">
@@ -320,19 +332,49 @@
     </div>
 </div>
 
+<div class="right-bar">
+    <div class="right-panel-toggle"
+         data-bind="css:{'display_none_sm':isSideBarOpen()||!isNavHidden()||isMenuOpen()||!isNavBackHidden()}">
+        <button class="btn-glyph" id="right-panel-toggle" data-bind="click:toggleRightPanel"><img src="images/list.svg"
+                                                                                                  alt="toggle"></button>
+    </div>
+    <div class="right-panel" data-bind="css:{'right-bar-hidden':!isRightPanelOpen()}">
+        <div class="filter-input-container">
+            <input type="text" id="filter-input" data-bind="textInput:filterInput,event:{keyup:filterDefault}">
+            <button class="btn-glyph" id="right-panel-close" data-bind="click:toggleRightPanel"><img
+                    src="images/cancel.svg" alt="close"></button>
+        </div>
+
+        <div class="filter-button-group">
+            <button class="filter-button" data-bind="click:showDefaultMarkers">Show All Markers</button>
+            <button class="filter-button" data-bind="click:hideDefaultMarkers">Hide All Markers</button>
+        </div>
+
+        <div class="filter-list">
+            <h4>List of Museums in New York</h4>
+            <ul class="list-predictions" data-bind="foreach:defaultLocations1">
+                <li>
+                    <button class="default-location" data-bind="text:title,click:$root.defaultOnClick"></button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="bower_components/knockout/dist/knockout.js"></script>
+<script src="js/jquery-3.1.1.min.js"></script>
 <script src="js/controller.js"></script>
 <script src="js/map.js"></script>
 <script src="js/foursquare.js"></script>
 <!--<script  async defer-->
-<!--src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCadwJpNLlZz4ylftxHZFubT5sWWYopuPU&callback=initMap">-->
+<!--src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCadwJpNLlZz4ylftxHZFubT5sWWYopuPU&callback=initMap" onerror="mapError()">-->
 <!--</script>-->
 
 <!--<script async defer-->
-        <!--src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyBrYyn5gtgO2Qjf0h4lbXeIkELPfRlSx1w&callback=initMap">-->
+<!--src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyBrYyn5gtgO2Qjf0h4lbXeIkELPfRlSx1w&callback=initMap" onerror="mapError()">-->
 <!--</script>-->
 
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCkAJsXhx9ohICo93TdYbaJoejLfs3VveE&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCkAJsXhx9ohICo93TdYbaJoejLfs3VveE&callback=initMap" onerror="mapError()">
 </script>
 </body>
 </html>

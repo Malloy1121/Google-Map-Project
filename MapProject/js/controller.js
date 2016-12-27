@@ -5,8 +5,8 @@ var Mode=function (mode,image) {
 };
 
 var Location=function () {
-    this.starting=ko.observable();
-    this.destination=ko.observable();
+    this.starting=ko.observable("");
+    this.destination=ko.observable("");
 };
 
 var SlideButton=function (flag) {
@@ -32,16 +32,19 @@ var Food=function () {
     this.category="";
     this.photo="images/coming-soon.svg";
     this.rating="0";
-    this.hours="";
     this.address="";
     this.price="";
     this.ratingColor="#808080";
 };
 
+
 function VM() {
     var self=this;
+    this.filterInput=ko.observable();
     this.savedLocations=ko.observableArray();
     this.currentMarker=ko.observable();
+    this.currentAddress=ko.observable();
+    this.infoWinTitle=ko.observable("");
     this.startingMarker=ko.observable();
     this.destMarker=ko.observable();
     this.location=new Location();
@@ -59,6 +62,7 @@ function VM() {
     this.isShowTraffic=ko.observable(false);
     this.isAvoidTolls=ko.observable(false);
     this.isRouteOpen=ko.observable(false);
+    this.isRightPanelOpen=ko.observable(false);
     this.slide=new SlideButton(false);
     this.searchBtn=new SearchButton(true);
     this.searchBtnIcon=ko.observable(this.searchBtn.image());
@@ -70,6 +74,8 @@ function VM() {
     this.toStarting=ko.observable(false);
     this.currentSlide=ko.observable(this.slide.image());
     this.currentNavSlide=ko.observable(this.navSlide.image());
+    this.defaultLocations=ko.observableArray();
+    this.defaultLocations1=ko.observableArray();
     this.modes=[new Mode("DRIVING","images/sports-car.svg"),
         new Mode("WALKING","images/pedestrian-walking.svg"),
         new Mode("BICYCLING","images/bicycle.svg"),
@@ -116,11 +122,6 @@ function VM() {
                     return;
                 each.setMap(null);
             });
-            markers.forEach(function (each) {
-                if(each==self.destMarker()||each==self.startingMarker())
-                    return;
-                each.setMap(null);
-            });
         }
 
         else {
@@ -131,18 +132,17 @@ function VM() {
                     each.setMap(null);
                     each=null;
                 });
-                hideMarkers(markers);
                 placeMarkers = [];
             }
         }
 
         if(!this.isSideBarOpen()){
-            if(self.startingMarker()) {
+            if(self.startingMarker()&&self.defaultLocations().indexOf(self.startingMarker())<0) {
                 // console.log(self.startingMarker());
                 self.startingMarker().setMap(null);
                 self.startingMarker(null);
             }
-            if(self.destMarker()) {
+            if(self.destMarker()&&self.defaultLocations().indexOf(self.destMarker())<0) {
                 // console.log(self.destMarker());
                 self.destMarker().setMap(null);
                 self.destMarker(null);
@@ -297,7 +297,6 @@ function VM() {
         });
         placeMarkers=[];
 
-       hideMarkers(markers);
 
         self.location.destination(prediction.description);
         getPlaces();
@@ -316,8 +315,6 @@ function VM() {
             each.setMap(null);
         });
         // placeMarkers=[];
-
-        hideMarkers(markers);
 
         getSinglePlace(prediction.description);
 
@@ -340,7 +337,7 @@ function VM() {
     };
 
     this.showDirection=function () {
-        hideMarkers(markers);
+        hideMarkers(self.defaultLocations());
         if(self.isDestReady()&&self.isStartingReady()) {
             displayDirections();
             return;
@@ -382,6 +379,112 @@ function VM() {
     };
 
 
+    this.toggleRightPanel=function () {
+        this.isRightPanelOpen(!this.isRightPanelOpen());
+    };
+
+    this.hideDefaultMarkers=function () {
+        this.defaultLocations().forEach(function (each) {
+            each.setMap(null);
+        })
+    };
+
+    this.showDefaultMarkers=function () {
+        this.defaultLocations().forEach(function (each) {
+            each.setMap(map);
+        })
+    };
+
+    this.defaultOnClick=function (marker) {
+        defaultOnClick(marker);
+        marker.setAnimation(google.maps.Animation.DROP);
+        self.isRightPanelOpen(false);
+        self.defaultLocations().forEach(function (each) {
+           each.setMap(null);
+        });
+        marker.setMap(map);
+    };
+
+    this.filterDefault=function () {
+        self.defaultLocations1([]);
+        if(self.filterInput()==null||self.filterInput().length==0){
+            self.defaultLocations1(self.defaultLocations());
+            self.defaultLocations().forEach(function (each) {
+                each.setMap(map);
+            });
+        }
+        else {
+            self.defaultLocations().forEach(function (each) {
+                if (each.title.toLowerCase().indexOf(self.filterInput().toLowerCase())>=0) {
+                    each.setMap(map);
+                    self.defaultLocations1.push(each);
+                }
+                else {
+                    each.setMap(null);
+                    self.defaultLocations1.remove(each);
+                }
+            });
+        }
+    };
+
+    this.startingKeyUp=function (data,event) {
+        self.isStartingReady(false);
+        self.isShowPredictions(true);
+        if (self.location.starting().length > 0)
+            getPredictions(self.location.starting());
+        else
+            self.setPredictions(null);
+    };
+
+    this.destKeyUp=function (data,event) {
+        self.isShowPredictions(true);
+        self.isDestReady(false);
+        if (self.location.destination().length > 0)
+            getPredictions(self.location.destination());
+        else
+            self.setPredictions(null);
+    };
+
+    this.startingClick=function (data,event) {
+        self.toStarting(true);
+        self.isShowPredictions(!self.isShowPredictions());
+        // console.log(vm.isShowPredictions());
+        if (self.location.starting().length > 0)
+            getPredictions(self.location.starting());
+        else
+            self.setPredictions(null);
+    };
+
+    this.destClick=function (data,event) {
+        self.toStarting(false);
+        self.isShowPredictions(!self.isShowPredictions());
+        if (self.location.destination().length > 0)
+            getPredictions(self.location.destination());
+        else
+            self.setPredictions(null);
+    };
+
+    this.inputKeyUp=function (data,event) {
+        if (self.location.destination().length > 0) {
+            getPredictions(self.location.destination());
+        }
+        else
+            self.setPredictions(null);
+    };
+
+    this.searchClick=function () {
+        info_win.innerHTML="";
+        self.isInputListClose(true);
+        if(self.location.destination()=="")
+            return;
+        self.isBtnGroupHidden(true);
+        self.isNavBackHidden(true);
+        hideMarkers(placeMarkers);
+        placeMarkers=[];
+        getPlaces();
+        self.searchBtn.flag=true;
+        self.searchBtnIcon(self.searchBtn.image());
+    };
 }
 var vm=new VM();
 ko.applyBindings(vm);

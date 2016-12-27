@@ -14,8 +14,11 @@ $(document).ready(function () {
         limit: 1
     };
 
+    var errorFlag=true;
+
     //Find nearby restaurants according to lat and lng
     $.explore = function (ll) {
+        errorFlag=true;
         var date = new Date();
         var version = date.getFullYear().toString() + (date.getMonth() + 1).toString() + date.getDate().toString();
         // console.log(date.getFullYear(),date.getMonth()+1,date.getDate(),version);
@@ -36,7 +39,8 @@ $(document).ready(function () {
                 });
             },
             error: function (data) {
-                console.log(data);
+                console.log(data.responseText);
+                alert("Requesting restaurant list failed.");
             }
         });
     };
@@ -59,7 +63,10 @@ $(document).ready(function () {
                 // console.log(venue);
             },
             error: function (data) {
-                console.log(data);
+                console.log(data.responseText);
+                if(errorFlag)
+                alert("Requesting restaurant photo failed.");
+                errorFlag=false;
             }
         });
     };
@@ -75,9 +82,9 @@ $(document).ready(function () {
             food.rating = venue.rating;
             food.ratingColor="#"+venue.ratingColor;
         }
-        if(venue.hours)
-        food.hours=venue.hours.status;
-        food.address=venue.location.address+", "+venue.location.city;
+        venue.hours? food.hours=venue.hours.status:food.hours="Hours not available";
+        food.address=venue.location.address?venue.location.address+", ":"";
+        food.address+=venue.location.city;
         var price="";
         if(venue.price) {
             for (var i = 0; i < venue.price.tier; i++) {

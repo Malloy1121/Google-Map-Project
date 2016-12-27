@@ -1,7 +1,7 @@
 div.nearby {
     width: 100%;
     height: auto;
-    padding: 10px 0;
+    padding: 0 0 10px 0;
 }
 
 div.food {
@@ -42,3 +42,6 @@ div.food-address {
     padding-bottom: 3px;
 }
 
+div.food span {
+    max-width: 50vw;
+}

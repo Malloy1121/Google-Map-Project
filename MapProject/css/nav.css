@@ -183,3 +183,15 @@ div.button-group {
 div#nav_close_sm {
     display: none;
 }
+
+.address {
+    text-align: center;
+    padding: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+div.food-name div {
+    display: inline-block;
+    max-width: 50vw;
+}
