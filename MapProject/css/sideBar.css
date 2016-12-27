@@ -1,0 +1,226 @@
+div.side-bar {
+    z-index: 3;
+    height: 100%;
+    width: 450px;
+    background: white;
+    display: inline-block;
+    position: absolute;
+    top:0;
+    transform: translateX(-480px);
+    transition: transform 0.1s;
+    -webkit-transition: transform 0.1s;
+    -moz-transition: transform 0.1s;
+    -ms-transition: transform 0.1s;
+    -o-transition: transform 0.1s;
+    will-change: transform;
+    /*left: -450px;*/
+}
+
+div.sideBar_open {
+    transform: translateX(0px);
+}
+
+div.sideBar_close {
+    transform: translateX(-120%);
+}
+
+div.sideBar_hidden {
+    transform: translateX(-450px);
+}
+
+div.side-bar>div {
+    padding-left: 50px;
+}
+
+div.mode-bar {
+    width: 100%;
+    padding:10px;
+    background-color: rgb(66, 133, 244);
+    margin: 0 auto;
+}
+
+
+div.mode {
+    display: inline-block;
+    margin: 5px;
+
+}
+
+div.mode img {
+    width: 35px;
+    height: 35px;
+}
+
+.btn-glyph {
+    background: none;
+    border: none;
+    height: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+.selectedMode {
+    /*background-color: #3367D6;*/
+    background-color: white;
+    border-radius:20px;
+}
+
+
+div.input-route-container {
+    background-color: rgb(66, 133, 244);
+    padding-bottom:10px;
+}
+
+
+
+div.input-route {
+
+    width: 310px;
+    display: inline-block;
+}
+
+div.input-route-reverse {
+    display: block;
+    height: inherit;
+    vertical-align: top;
+    position: relative;
+    /*top:20px;*/
+    /*left: 15px;*/
+}
+
+div.input-route div {
+    padding:5px;
+}
+
+div.mode:last-child {
+    float: right;
+    width: 19%;
+    position: relative;
+    left: 10px;
+    padding:5px;
+    margin: 0;
+}
+
+div.input-route-buttons {
+    display: inline-block;
+    height: inherit;
+    vertical-align: top;
+    float: right;
+    position: relative;
+    right: 15px;
+}
+
+div.input-route-buttons>div {
+    padding: 5px;
+    vertical-align: middle;
+}
+
+div.input-route-reverse img,div.input-route-go img {
+    width: 25px;
+    display: block;
+}
+
+div.input-route-reverse button {
+    display: block;
+
+}
+
+div.input-route input {
+    background: none;
+    width: 100%;
+    border: none;
+    border-bottom: 1px white solid;
+    font-size: 1.2em;
+    color:white;
+}
+
+div.input-route input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #babfdb;
+}
+
+div.input-route input::-moz-placeholder { /* Firefox 19+ */
+    color: #babfdb;
+}
+
+div.input-route input:-ms-input-placeholder { /* IE 10+ */
+    color: #babfdb;
+}
+
+div.input-route input:-moz-placeholder { /* Firefox 18- */
+    color: #babfdb;
+}
+
+div#side-bar-slide {
+    display: inline-block;
+    position: absolute;
+    padding-left: 0;
+    border: 1px lightgrey solid;
+    /*border-left: none;*/
+    left:450px;
+    top:15px;
+    background-color: white;
+}
+
+
+div.route {
+    padding:20px;
+}
+
+
+div.list-predictions-container {
+    position: relative;
+    width: 100%;
+    background-color: white;
+    /*border: 1px solid lightgrey;*/
+    /*border-top:none;*/
+
+}
+
+ul.list-predictions {
+    padding-left: 0;
+    margin-bottom: 0;
+    width: 100%;
+    background-color: white;
+}
+
+ul.list-predictions li {
+    width: 100%;
+    font-size: 1.1em;
+    padding: 10px;
+    height: auto;
+    line-height: 23px;
+    border-bottom: 1px solid rgba(121, 122, 124,0.6);
+    overflow:hidden;
+    background-color: white;
+}
+
+
+
+.btn-result {
+    background-color: white;
+    border: none;
+    height: 100%;
+    padding: 0;
+    width: 100%;
+}
+
+.btn-result div {
+    display: inline-block;
+}
+
+div#result {
+    width: 100%;
+    padding-left: 0;
+    position: absolute;
+    z-index: 4;
+}
+
+#result li div.prediction {
+    width: 380px;
+}
+
+div.routes-toggle {
+    display: none;
+}
+
+
