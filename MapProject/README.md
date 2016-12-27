@@ -4,6 +4,14 @@
 * Download the zip file and decompress it to your local device.
 * Open the folder and run "index.html" with your browser.
 
+## Before you use this app
+* Get a Google Maps Javascript API key and enable Google Maps APIs on Google Developer Console.
+ (Google Maps JavaScript API, Google Maps Roads API, Google Street View Image API, Google Places API Web Service,
+  Google Maps Geocoding API, Google Maps Directions API, Google Maps Geolocation API).
+* Replace "YourAPIKey" in Google Maps script src at the very bottom of "index.html" with you API key.
+* Create a Foursquare account and create a Foursquare API key at "developer.foursquare.com".
+* Replace the value of variable "client_id" with your client ID and "client_secret" with your client secret in "js/foursquare.js".
+
 ##Directions
 * You can enter an address or a place name (such as pizza hut) to locate a spot you are searching for.
 * Clicking on a marker can show you detailed information about this spot and restaurants nearby it.

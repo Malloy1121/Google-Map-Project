@@ -1,16 +1,18 @@
 $(document).ready(function () {
+    var client_id="Your client ID";
+    var client_secret="Your client secret";
     var param = {
         radius: 1000 * 1.61,                //Search for targets within 1 mile
         categoryId: "4d4b7105d754a06374d81259",             //Only look for food
-        client_id: "55QPL3HEO4XFTMP1MVZ5A3HGFRFNRIVUCOEGIX12WTQNL5IZ",
-        client_secret: "THU4ZK5SXWQCSLPPJUHJK5RAXH5S4F5E1JGSHVC0YMQABUJC",
+        client_id: client_id,
+        client_secret: client_secret,
         ll: "40.7,-74",
         limit: 20
     };
 
     var param_photo = {
-        client_id: "55QPL3HEO4XFTMP1MVZ5A3HGFRFNRIVUCOEGIX12WTQNL5IZ",
-        client_secret: "THU4ZK5SXWQCSLPPJUHJK5RAXH5S4F5E1JGSHVC0YMQABUJC",
+        client_id: client_id,
+        client_secret: client_secret,
         limit: 1
     };
 
