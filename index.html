@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Google Map API Project</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/sideBar.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/nearby.css">
+    <link rel="stylesheet" href="css/right-bar.css">
+    <link rel="stylesheet" href="css/style-sm.css" media="screen and (max-width:750px)">
+
+</head>
+<body>
+
+<div id="nav" data-bind="style:{display:isSideBarOpen()?'none':'inline-block'},css:{'navHidden':!isNavHidden()}">
+    <div class="search-bar">
+        <div class="container-button-burger">
+            <button class="glyphicon glyphicon-menu-hamburger" data-bind="click:openMenu"></button>
+        </div>
+        <div class="input-address-container">
+            <input type="text" id="input" placeholder="Search Google Maps"
+                   data-bind="value:location.destination,click:openInputList,event:{keyup:inputKeyUp},textInput:location.destination">
+            <span class="glyphicon glyphicon-search" id="search" data-bind="click:searchClick"></span>
+        </div>
+
+        <div class="seperator"></div>
+
+        <div class="button-nav-container">
+            <button class="btn-glyph" data-bind="click:toggleSideBar">
+                <img src="images/right-arrow.svg" alt="close or arrow" data-bind="attr:{'src':searchBtnIcon}">
+            </button>
+        </div>
+    </div>
+
+    <div class="list-predictions-container display_none" data-bind="css:{display_none:isInputListClose}">
+        <ul class="list-predictions" data-bind="foreach:predictions">
+            <li data-bind="click:$root.setMarkers">
+                <div><img class="icon_prediction" data-bind="attr:{src:$root.icon_image($data)}"></div>
+                <div class="prediction" data-bind="text:description"></div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="information display_none" data-bind="css:{'navHidden':!isNavHidden(),'display_none':isNavBackHidden}">
+    <div class="blue_back"></div>
+    <div class="info_back">
+        <div id="nav_back">
+            <div id="info_win">
+                <div id="info_title" data-bind="text:infoWinTitle"></div>
+                <div id="street_view"></div>
+            </div>
+
+        </div>
+        <div class="address" data-bind="text:currentAddress"></div>
+        <div class="button-group" data-bind="css:{'display_none':isBtnGroupHidden}">
+            <table class="button-group-table">
+                <tr>
+                    <td>
+                        <button class="btn-glyph-lg btn-glyph" data-bind="click:setStartingMarker">
+                            <div><img src="images/location-pin.svg" alt="starting"></div>
+                            <div class="button-group-label">Depart from here</div>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn-glyph-lg btn-glyph" data-bind="click:setDestMarker">
+                            <div><img src="images/navigation.svg" alt="destination"></div>
+                            <div class="button-group-label">Go to here</div>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn-glyph-lg btn-glyph" data-bind="click:save">
+                            <div><img src="images/star.svg" alt="save"></div>
+                            <div class="button-group-label">Save</div>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="nav_close">
+            <button id="nav_close_btn" class="btn-glyph" data-bind="click:hideNav"><img
+                    data-bind="attr:{src:currentNavSlide}" alt="slide"></button>
+        </div>
+        <div id="nav_close_sm">
+            <button class="btn-glyph" data-bind="click:toggleSideBar">Close
+            </button>
+        </div>
+        <div class="nearby">
+            <h3 style="margin-top: 10px">Restaurants nearby</h3>
+            <!-- ko foreach:nearby -->
+            <div class="food">
+                <div class="food-name">
+                    <div data-bind="text:name"></div>
+                    <div data-bind="text:category" style="float: right"></div>
+                    <span> </span>
+
+                </div>
+                <div class="food-rating">
+                    <div data-bind="text:rating,style:{'backgroundColor':ratingColor}" class="rating"></div>
+                    <div data-bind="text:price"></div>
+                    <div class="food-hours" data-bind="text:hours" style="float: right"></div>
+                </div>
+
+                <div class="food-address" data-bind="text:address"></div>
+                <div class="food-photo"><img data-bind="attr:{src:photo}" alt="photo"></div>
+            </div>
+            <!-- /ko -->
+        </div>
+
+    </div>
+
+</div>
+
+<div id="map" data-bind="click:closeSideBar">
+</div>
+
+<div class="side-bar sideBar_close"
+     data-bind="css:{'sideBar_open':isSideBarOpen(),'sideBar_close':!isSideBarOpen(),'sideBar_hidden':isSideBarHidden()}">
+    <div id="side-bar-slide">
+        <button id="btn-glyph" class="btn-glyph" data-bind="click:hideSideBar"><img data-bind="attr:{src:currentSlide}"
+                                                                                    alt="slide"></button>
+    </div>
+    <div class="mode-bar">
+        <!-- ko foreach:modes -->
+        <div class="mode" data-bind="css:{selectedMode:isSelected},click:$root.selectMode">
+            <button class="btn-glyph"><img data-bind="attr:{src:image,alt:mode}"></button>
+        </div>
+        <!-- /ko -->
+
+        <div class="mode">
+            <button class="btn-glyph" data-bind="click:$root.toggleSideBar"><img src="images/close-button.svg"
+                                                                                 alt="close" style="width: 25px;">
+            </button>
+        </div>
+    </div>
+    <div class="input-route-container">
+        <div class="input-route">
+            <div id="input-starting">
+                <input type="text" id="starting" placeholder="Choose starting point..."
+                       data-bind="value:location.starting,click:startingClick,event:{keyup:startingKeyUp},textInput:location.starting">
+            </div>
+            <div id="input-dest">
+                <input type="text" id="dest" placeholder="Choose destination..."
+                       data-bind="value:location.destination,click:destClick,event:{keyup:destKeyUp},textInput:location.destination">
+            </div>
+        </div>
+        <div class="input-route-buttons">
+            <div class="input-route-reverse">
+                <button class="btn-glyph" data-bind="click:reverseLocation"><img
+                        src="images/up-and-down-opposite-double-arrows-side-by-side.svg" alt="reverse"></button>
+            </div>
+            <div class="input-route-go">
+                <button class="btn-glyph"
+                        data-bind="click:showDirection,attr:{'disable':!(isDestReady()&&isStartingReady())}"><img
+                        src="images/turn-right-sign.svg" alt="navigate"></button>
+            </div>
+        </div>
+    </div>
+    <div id="result">
+        <div class="list-predictions-container display_none"
+             data-bind="css:{display_none:predictions()==null||!isShowPredictions()}">
+            <ul class="list-predictions" data-bind="foreach:predictions">
+                <li data-bind="click:$root.setSingleMarker">
+                    <button class="btn-result">
+                        <div><img class="icon_prediction" data-bind="attr:{src:$root.icon_image($data)}"></div>
+                        <div class="prediction" data-bind="text:description"></div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="routes-toggle"
+         data-bind="css:{'routes-toggle-hidden':!isRouteOpen(),'display_none':!isDestReady()||!isStartingReady()}"
+         style="padding-left: 0">
+        <button class="btn-glyph" data-bind="click:toggleRoute">
+            <img src="images/up-and-down-opposite-arrows-symbol-side-by-side.svg" alt="toggle"
+                 style="height: 35px;width:35px;font-size: 1.2em">
+        </button>
+    </div>
+    <div id="routes" data-bind="css:{'routes-open':isRouteOpen()}">
+    </div>
+</div>
+
+<div class="menu-container">
+    <div class="menu" data-bind="css:{'menu_open':isMenuOpen()}">
+        <div class="menu-header">
+            <h3 style="text-align: center;margin-top: 10px">My Preference</h3>
+        </div>
+        <hr>
+        <div class="options-container">
+            <h4>Display preference</h4>
+            <ul class="preference-list">
+                <li data-bind="click:toggleShowTraffic,css:{'preference_able':isShowTraffic()}">
+                    <button class="btn-pre">
+                        <div>
+                            <!--<img class="icon_prediction" src="images/traffic-light.svg" data-bind="css:{'preference_able':isShowTraffic()}">-->
+                            <svg version="1.1" class="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="459px" height="459px" viewBox="0 0 459 459" style="enable-background:new 0 0 459 459;" xml:space="preserve">
+<g>
+	<g id="traffic">
+		<path d="M433.5,178.5H357v-28.05c43.35-10.2,76.5-51,76.5-99.45H357V25.5C357,10.2,346.8,0,331.5,0h-204
+			C112.2,0,102,10.2,102,25.5V51H25.5c0,48.45,33.15,86.7,76.5,99.45v28.05H25.5c0,48.45,33.15,86.7,76.5,99.45V306H25.5
+			c0,48.45,33.15,86.7,76.5,99.45v28.05c0,15.3,10.2,25.5,25.5,25.5h204c15.3,0,25.5-10.2,25.5-25.5v-28.05
+			c43.35-10.2,76.5-51,76.5-99.45H357v-28.05C400.35,265.2,433.5,226.95,433.5,178.5z M229.5,408c-28.05,0-51-22.95-51-51
+			s22.95-51,51-51s51,22.95,51,51S257.55,408,229.5,408z M229.5,280.5c-28.05,0-51-22.95-51-51s22.95-51,51-51s51,22.95,51,51
+			S257.55,280.5,229.5,280.5z M229.5,153c-28.05,0-51-22.95-51-51s22.95-51,51-51s51,22.95,51,51S257.55,153,229.5,153z"/>
+	</g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+                        </div>
+                        <div class="preference-text">Traffic</div>
+                    </button>
+                </li>
+                <li data-bind="click:toggleAvoidTolls,css:{'preference_able':isAvoidTolls()}">
+                    <button class="btn-pre">
+                        <div>
+                            <!--<img class="icon_prediction" src="images/traffic-light.svg" data-bind="css:{'preference_able':isShowTraffic()}">-->
+                            <svg version="1.1" class="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 473.7 473.7" style="enable-background:new 0 0 473.7 473.7;" xml:space="preserve">
+<g>
+	<g>
+		<path d="M448.927,150.131H147.301V123.08c0-4.142-3.357-7.5-7.5-7.5H30.2c-4.143,0-7.5,3.358-7.5,7.5v220.04H7.5
+			c-4.143,0-7.5,3.358-7.5,7.5s3.357,7.5,7.5,7.5h155c4.143,0,7.5-3.358,7.5-7.5s-3.357-7.5-7.5-7.5h-15.199V199.678h301.626
+			c13.66,0,24.773-11.113,24.773-24.773C473.7,161.245,462.587,150.131,448.927,150.131z M121.058,165.131h54.461l-19.547,19.546
+			h-34.914c0.795-3.128,1.221-6.401,1.221-9.773C122.279,171.533,121.854,168.259,121.058,165.131z M196.733,165.131h21.075
+			l-19.546,19.546h-21.076L196.733,165.131z M239.022,165.131h44.343l-19.546,19.546h-44.343L239.022,165.131z M304.579,165.131
+			h21.076l-19.547,19.546h-21.075L304.579,165.131z M346.869,165.131h44.342l-19.546,19.546h-44.343L346.869,165.131z
+			 M412.424,165.131H433.5l-19.547,19.546h-21.075L412.424,165.131z M132.301,343.12H37.7V130.58h94.601v19.551h-18.743
+			c-7.275-9.069-18.439-14.891-30.943-14.891c-21.87,0-39.663,17.793-39.663,39.664s17.793,39.664,39.663,39.664
+			c12.504,0,23.668-5.822,30.943-14.891H132.3L132.301,343.12L132.301,343.12z M107.279,174.905c0,13.6-11.064,24.664-24.664,24.664
+			s-24.663-11.065-24.663-24.664c0-13.599,11.063-24.664,24.663-24.664S107.279,161.305,107.279,174.905z M448.927,184.678h-13.759
+			l18.381-18.381c3.064,1.652,5.151,4.89,5.151,8.608C458.7,180.293,454.315,184.678,448.927,184.678z"/>
+		<path d="M105.5,224.85h-41c-4.143,0-7.5,3.358-7.5,7.5s3.357,7.5,7.5,7.5h41c4.143,0,7.5-3.358,7.5-7.5
+			S109.643,224.85,105.5,224.85z"/>
+	</g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+                        </div>
+                        <div class="preference-text">Avoid Tolls</div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="locations-container" data-bind="css:{'display_none':savedLocations().length==0}"
+             style="height: calc(100% - 200px)">
+            <hr>
+            <h4>My locations</h4>
+            <div class="savedLocations">
+
+                <ul class="list-predictions list-savedLocations" data-bind="foreach:savedLocations">
+                    <li>
+                        <button class="btn-pre btn-savedlocation"
+                                data-bind="text:title,click:$root.myLocationClick"></button>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <div class="btn-menuClose">
+            <button class="btn-glyph" data-bind="click:closeMenu"><img src="images/double-left-chevron.svg"
+                                                                       alt="close menu"
+                                                                       style="height: 30px;width: 30px;"></button>
+        </div>
+    </div>
+    <div class="menu-background" data-bind="css:{'menu_background_open':isMenuOpen()},click:closeMenu">
+    </div>
+</div>
+
+<div class="right-bar">
+    <div class="right-panel-toggle"
+         data-bind="css:{'display_none_sm':isSideBarOpen()||!isNavHidden()||isMenuOpen()||!isNavBackHidden()}">
+        <button class="btn-glyph" id="right-panel-toggle" data-bind="click:toggleRightPanel"><img src="images/list.svg"
+                                                                                                  alt="toggle"></button>
+    </div>
+    <div class="right-panel" data-bind="css:{'right-bar-hidden':!isRightPanelOpen()}">
+        <div class="filter-input-container">
+            <input type="text" id="filter-input" data-bind="textInput:filterInput,event:{keyup:filterDefault}">
+            <button class="btn-glyph" id="right-panel-close" data-bind="click:toggleRightPanel"><img
+                    src="images/cancel.svg" alt="close"></button>
+        </div>
+
+        <div class="filter-button-group">
+            <button class="filter-button" data-bind="click:showDefaultMarkers">Show All Markers</button>
+            <button class="filter-button" data-bind="click:hideDefaultMarkers">Hide All Markers</button>
+        </div>
+
+        <div class="filter-list">
+            <h4>List of Museums in New York</h4>
+            <ul class="list-predictions" data-bind="foreach:defaultLocations1">
+                <li>
+                    <button class="default-location" data-bind="text:title,click:$root.defaultOnClick"></button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="bower_components/knockout/dist/knockout.js"></script>
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/controller.js"></script>
+<script src="js/map.js"></script>
+<script src="js/foursquare.js"></script>
+<!--<script  async defer-->
+<!--src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCadwJpNLlZz4ylftxHZFubT5sWWYopuPU&callback=initMap" onerror="mapError()">-->
+<!--</script>-->
+
+<!--<script async defer-->
+<!--src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyBrYyn5gtgO2Qjf0h4lbXeIkELPfRlSx1w&callback=initMap" onerror="mapError()">-->
+<!--</script>-->
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCkAJsXhx9ohICo93TdYbaJoejLfs3VveE&callback=initMap" onerror="mapError()">
+</script>
+</body>
+</html>

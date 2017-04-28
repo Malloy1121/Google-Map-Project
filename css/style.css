@@ -1,0 +1,69 @@
+
+.display_none {
+    display: none;
+}
+
+div.display_none.routes-toggle {
+    display: none;
+}
+
+button#btn-glyph,
+button#nav_close_btn {
+    width: 30px;
+    height: 50px;
+    padding:1px 3px;
+}
+
+button#btn-glyph img,
+button#nav_close_btn img {
+    width: 20px;
+    display: block;
+}
+
+
+ul.list-predictions li div {
+    display: inline-block;
+    padding:0 10px;
+    vertical-align: top;
+}
+
+div.prediction {
+
+    width: 338px;
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+img.icon_prediction {
+    height: 22px;
+}
+
+ul li {
+    list-style: none;
+
+}
+
+.li-mouseover {
+    background-color: lightgrey;
+}
+
+
+
+button.btn-glyph img{
+    width: 25px;
+}
+
+hr {
+    margin: 15px 0;
+}
+
+h4 {
+    padding:0 10px;
+}
+
+
+
+
+
