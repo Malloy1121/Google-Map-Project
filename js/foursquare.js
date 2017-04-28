@@ -20,7 +20,11 @@ $(document).ready(function () {
     $.explore = function (ll) {
         errorFlag=true;
         var date = new Date();
-        var version = date.getFullYear().toString() + (date.getMonth() + 1).toString() + date.getDate().toString();
+        var month=date.getMonth()+1;
+        if(month<10){
+            month="0"+month.toString();
+        }
+        var version = date.getFullYear().toString() + month + date.getDate().toString();
         // console.log(date.getFullYear(),date.getMonth()+1,date.getDate(),version);
         param.ll=ll;
         param.v = version;
@@ -31,7 +35,7 @@ $(document).ready(function () {
             type: "get",
             data: param,
             success: function (data) {
-                // console.log(data.response.groups[0].items);
+                // console.log(data.response);
                 var items = data.response.groups[0].items;
                 items.forEach(function (each) {
                     var id = each.venue.id;
@@ -39,7 +43,7 @@ $(document).ready(function () {
                 });
             },
             error: function (data) {
-                console.log(data.responseText);
+                // console.log(data.responseText);
                 alert("Requesting restaurant list failed.");
             }
         });
@@ -63,7 +67,7 @@ $(document).ready(function () {
                 // console.log(venue);
             },
             error: function (data) {
-                console.log(data.responseText);
+                // console.log(data.responseText);
                 if(errorFlag)
                 alert("Requesting restaurant photo failed.");
                 errorFlag=false;
