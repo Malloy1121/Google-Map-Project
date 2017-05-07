@@ -14,19 +14,23 @@ $(document).ready(function () {
         limit: 1
     };
 
-    var errorFlag=true;
+    var errorFlag = true;
 
     //Find nearby restaurants according to lat and lng
     $.explore = function (ll) {
-        errorFlag=true;
+        errorFlag = true;
         var date = new Date();
-        var month=date.getMonth()+1;
-        if(month<10){
-            month="0"+month.toString();
+        var today = date.getDate();
+        var month = date.getMonth() + 1;
+        if (month < 10) {
+            month = "0" + month.toString();
         }
-        var version = date.getFullYear().toString() + month + date.getDate().toString();
-        // console.log(date.getFullYear(),date.getMonth()+1,date.getDate(),version);
-        param.ll=ll;
+        if (today < 10) {
+            today = "0" + today.toString();
+        }
+        var version = date.getFullYear().toString() + month + today;
+        // console.log(date.getFullYear(), date.getMonth() + 1, today, version);
+        param.ll = ll;
         param.v = version;
         // console.log(param);
         $.ajax({
@@ -68,33 +72,33 @@ $(document).ready(function () {
             },
             error: function (data) {
                 // console.log(data.responseText);
-                if(errorFlag)
-                alert("Requesting restaurant photo failed.");
-                errorFlag=false;
+                if (errorFlag)
+                    alert("Requesting restaurant photo failed.");
+                errorFlag = false;
             }
         });
     };
 
     //Encapsulate results to JS objects
-    function createItem(item){
-        var food=new Food();
-        var venue=item.venue;
-        food.photo=item.photo;
-        food.name=venue.name;
-        food.category=venue.categories[0].shortName;
-        if(venue.rating) {
+    function createItem(item) {
+        var food = new Food();
+        var venue = item.venue;
+        food.photo = item.photo;
+        food.name = venue.name;
+        food.category = venue.categories[0].shortName;
+        if (venue.rating) {
             food.rating = venue.rating;
-            food.ratingColor="#"+venue.ratingColor;
+            food.ratingColor = "#" + venue.ratingColor;
         }
-        venue.hours? food.hours=venue.hours.status:food.hours="Hours not available";
-        food.address=venue.location.address?venue.location.address+", ":"";
-        food.address+=venue.location.city;
-        var price="";
-        if(venue.price) {
+        venue.hours ? food.hours = venue.hours.status : food.hours = "Hours not available";
+        food.address = venue.location.address ? venue.location.address + ", " : "";
+        food.address += venue.location.city;
+        var price = "";
+        if (venue.price) {
             for (var i = 0; i < venue.price.tier; i++) {
                 price += "$";
             }
-            food.price=price;
+            food.price = price;
         }
         vm.nearby.push(food);
     }
